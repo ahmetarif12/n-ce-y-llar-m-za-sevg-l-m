@@ -149,14 +149,17 @@
                 confetti({ particleCount: 1, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#ff4081', '#ffffff'], zIndex: 0 });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
+            
         }
-    </script>
-    function restartStory() {
+         function restartStory() {
     document.getElementById('clip-container').style.display = 'none';
     document.getElementById('start-screen').style.display = 'block';
     mainMusic.pause();
     mainMusic.currentTime = 0;
 }
+    </script>
+   
 </body>
 </html>
+
 
