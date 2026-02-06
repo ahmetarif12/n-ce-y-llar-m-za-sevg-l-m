@@ -110,6 +110,7 @@
         function startStory() {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('clip-container').style.display = 'block';
+            mainMusic.volume = 1;
             mainMusic.play();
             showNext();
             launchConfetti();
@@ -119,7 +120,7 @@
             let media = document.getElementsByClassName("myMedia");
             let textDiv = document.getElementById("message-text");
             if (currentIndex >= media.length) {
-                textDiv.innerHTML = "Sonsuza dek seninle... ❤️ <br><br> <button class='heart-btn' onclick='location.reload()' style='padding: 10px 25px; font-size: 0.9rem;'>Baştan İzle</button>";
+                textDiv.innerHTML = "Sonsuza dek seninle... ❤️ <br><br> <button class='heart-btn' onclick='restrartStory()' style='padding: 10px 25px; font-size: 0.9rem;'>Baştan İzle</button>";
                 textDiv.style.opacity = "1";
                 let fadeAudio = setInterval(function () {
                     if (mainMusic.volume > 0.05) { mainMusic.volume -= 0.05; } 
@@ -150,5 +151,12 @@
             }());
         }
     </script>
+    function restartStory() {
+    document.getElementById('clip-container').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'block';
+    mainMusic.pause();
+    mainMusic.currentTime = 0;
+}
 </body>
 </html>
+
