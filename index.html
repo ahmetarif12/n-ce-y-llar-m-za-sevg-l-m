@@ -8,19 +8,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap');
         body { margin: 0; background: #0f0f0f; color: #fff; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        #login-screen, #start-screen, #clip-container { text-align: center; padding: 30px; background: rgba(25, 25, 25, 0.98); border-radius: 35px; border: 1px solid #ff4081; box-shadow: 0 0 40px rgba(255, 64, 129, 0.2); width: 90%; max-width: 800px; transition: all 0.8s ease; box-sizing: border-box; }
-        #start-screen, #clip-container { display: none; }
+        #login-screen, #start-screen, #clip-container, #note-screen { text-align: center; padding: 30px; background: rgba(25, 25, 25, 0.98); border-radius: 35px; border: 1px solid #ff4081; box-shadow: 0 0 40px rgba(255, 64, 129, 0.2); width: 90%; max-width: 800px; transition: all 0.8s ease; box-sizing: border-box; position: absolute; }
+        #start-screen, #clip-container, #note-screen { display: none; }
         .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff4081; margin-bottom: 10px; display: block; }
         #timer { font-size: 1.4rem; color: #ff80ab; font-weight: 600; display: block; margin-top: 10px; letter-spacing: 1px; }
-        .media-box { width: 100%; height: 450px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 2px solid #222; position: relative; z-index: 10; }
+        .media-box { width: 100%; height: 400px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 2px solid #222; position: relative; }
         .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: sinematikGecis 1.2s ease-in-out; }
         @keyframes sinematikGecis { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
-        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; font-weight: 300; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); animation: textFade 1s; padding: 0 10px; overflow-wrap: break-word; z-index: 20; position: relative; }
-        @keyframes textFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .heart-btn { background: #ff4081; color: white; border: none; padding: 15px 35px; border-radius: 50px; cursor: pointer; font-size: 1.1rem; font-weight: 600; box-shadow: 0 5px 25px rgba(255, 64, 129, 0.4); transition: 0.4s; text-transform: uppercase; }
-        .heart-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 64, 129, 0.6); }
-        input { background: #1a1a1a; border: 1px solid #ff4081; color: white; padding: 15px; border-radius: 20px; width: 80%; text-align: center; font-size: 1.1rem; outline: none; }
-        @media (max-width: 600px) { .media-box { height: 350px; } .milat-baslik { font-size: 2.2rem; } .text-area { font-size: 1.1rem; } }
+        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; font-weight: 300; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); padding: 0 10px; }
+        .heart-btn { background: #ff4081; color: white; border: none; padding: 15px 35px; border-radius: 50px; cursor: pointer; font-size: 1.1rem; font-weight: 600; box-shadow: 0 5px 25px rgba(255, 64, 129, 0.4); transition: 0.4s; text-transform: uppercase; margin: 5px; }
+        .heart-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 64, 129, 0.6); }
+        input, textarea { background: #1a1a1a; border: 1px solid #ff4081; color: white; padding: 15px; border-radius: 20px; width: 80%; text-align: center; font-size: 1.1rem; outline: none; margin-bottom: 15px; }
+        textarea { height: 100px; resize: none; font-family: 'Poppins', sans-serif; }
+        #notes-list { max-height: 200px; overflow-y: auto; margin-top: 20px; text-align: left; padding: 10px; border-top: 1px solid #333; }
+        .note-item { background: rgba(255, 64, 129, 0.1); padding: 10px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #ff4081; font-size: 0.9rem; }
+        .note-date { font-size: 0.7rem; color: #ff80ab; display: block; margin-bottom: 5px; }
+        @media (max-width: 600px) { .media-box { height: 300px; } .milat-baslik { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
@@ -28,7 +31,7 @@
     <div id="login-screen">
         <h2 style="font-family: 'Dancing Script', cursive; font-size: 3rem; margin-bottom: 20px;">Kalbimin Anahtarı? ❤️</h2>
         <input type="password" id="passInput" placeholder="Sadece Bize Özel Şifre...">
-        <br><br>
+        <br>
         <button class="heart-btn" onclick="checkPassword()">Aşkımızın Kapısını Arala</button>
     </div>
 
@@ -65,6 +68,15 @@
         <audio id="mainMusic" src="muzik.mp3" loop></audio>
     </div>
 
+    <div id="note-screen">
+        <h2 class="milat-baslik">Geleceğimize Not Bırak</h2>
+        <textarea id="noteInput" placeholder="Buraya kalbinden geçenleri yaz sevgilim..."></textarea>
+        <br>
+        <button class="heart-btn" onclick="saveNote()">Notu Kaydet ❤️</button>
+        <button class="heart-btn" onclick="closeNoteScreen()" style="background: #333;">Geri Dön</button>
+        <div id="notes-list"></div>
+    </div>
+
     <script>
         const TANIŞMA_TARİHİ = "2025-04-03"; 
         const mesajlar = [
@@ -82,26 +94,21 @@
             "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.",
             "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.",
             "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.",
-            "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)"
+            "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm!"
         ];
 
         const mainMusic = document.getElementById('mainMusic');
         let currentIndex = 0;
 
-        // GİRİŞ FONKSİYONU
         function checkPassword() {
-            const inputVal = document.getElementById('passInput').value;
-            if(inputVal === "2240") {
+            if(document.getElementById('passInput').value === "2240") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('start-screen').style.display = 'block';
                 updateTimer();
                 setInterval(updateTimer, 1000);
-            } else { 
-                alert("Hatalı şifre hayatım!"); 
-            }
+            } else { alert("Hatalı şifre hayatım!"); }
         }
 
-        // SAYAÇ FONKSİYONU
         function updateTimer() {
             const start = new Date(TANIŞMA_TARİHİ);
             const now = new Date();
@@ -113,7 +120,6 @@
             document.getElementById('timer').innerText = `${days} Gün, ${hours} Saat, ${mins} Dakika, ${secs} Saniye`;
         }
 
-        // HİKAYEYİ BAŞLATMA
         function startStory() {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('clip-container').style.display = 'block';
@@ -123,32 +129,22 @@
             launchConfetti();
         }
 
-        // SIRADAKİ MEDYAYI GÖSTERME
         function showNext() {
             let media = document.getElementsByClassName("myMedia");
             let textDiv = document.getElementById("message-text");
 
             if (currentIndex >= media.length) {
-                textDiv.innerHTML = "Sonsuza dek seninle... ❤️ <br><br> <button class='heart-btn' id='restartBtn' style='padding: 10px 25px; font-size: 0.9rem;'>Baştan İzle</button>";
-                textDiv.style.opacity = "1";
-
-                // Baştan izle butonu tıklandığında restartStory çalışsın
-                document.getElementById('restartBtn').addEventListener('click', restartStory);
-
-                let fadeAudio = setInterval(function () {
-                    if (mainMusic.volume > 0.05) { mainMusic.volume -= 0.05; } 
-                    else { mainMusic.pause(); clearInterval(fadeAudio); }
-                }, 300);
+                textDiv.innerHTML = `Sonsuza dek seninle... ❤️ <br><br> 
+                    <button class='heart-btn' onclick='restartStory()' style='font-size: 0.8rem;'>Baştan İzle</button>
+                    <button class='heart-btn' onclick='openNoteScreen()' style='font-size: 0.8rem; background: #ad1457;'>Geleceğe Not Bırak</button>`;
                 return;
             }
 
-            // Önceki medyaları gizle
             for (let i = 0; i < media.length; i++) { 
                 media[i].style.display = "none"; 
                 if(media[i].tagName === "VIDEO") media[i].pause(); 
             }
 
-            // Aktif medyayı göster
             let currentItem = media[currentIndex];
             currentItem.style.display = "block";
             textDiv.innerHTML = mesajlar[currentIndex];
@@ -159,31 +155,50 @@
                 currentItem.play();
                 currentItem.onended = () => showNext();
             } else {
-                let displayTime = (currentIndex === media.length) ? 8000 : 6000;
-                setTimeout(showNext, displayTime); 
+                setTimeout(showNext, 6000); 
             }
         }
 
-        // SIFIRLAMA FONKSİYONU
+        function openNoteScreen() {
+            document.getElementById('clip-container').style.display = 'none';
+            document.getElementById('note-screen').style.display = 'block';
+            displayNotes();
+        }
+
+        function closeNoteScreen() {
+            document.getElementById('note-screen').style.display = 'none';
+            document.getElementById('clip-container').style.display = 'block';
+        }
+
+        function saveNote() {
+            const noteText = document.getElementById('noteInput').value;
+            if(!noteText.trim()) return alert("Lütfen bir şeyler yaz sevgilim...");
+            const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
+            notes.unshift({ text: noteText, date: new Date().toLocaleString('tr-TR') });
+            localStorage.setItem('ask_notlari', JSON.stringify(notes));
+            document.getElementById('noteInput').value = "";
+            displayNotes();
+            launchConfetti();
+        }
+
+        function displayNotes() {
+            const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
+            document.getElementById('notes-list').innerHTML = notes.map(n => `
+                <div class="note-item"><span class="note-date">${n.date}</span>${n.text}</div>
+            `).join('');
+        }
+
         function restartStory() {
             currentIndex = 0;
             document.getElementById('clip-container').style.display = 'none';
             document.getElementById('start-screen').style.display = 'block';
-            mainMusic.pause();
             mainMusic.currentTime = 0;
-            mainMusic.volume = 1;
+            mainMusic.play();
         }
 
-        // KONFETİ EFEKTİ
         function launchConfetti() {
-            var end = Date.now() + (10 * 1000);
-            (function frame() {
-                confetti({ particleCount: 1, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors: ['#ff4081', '#ffffff'], zIndex: 0 });
-                confetti({ particleCount: 1, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#ff4081', '#ffffff'], zIndex: 0 });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
     </script>
 </body>
 </html>
-
