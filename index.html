@@ -39,6 +39,7 @@
             <span id="timer"></span>
             <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">geçti.</p>
         </div>
+        <br>
         <button class="heart-btn" onclick="startStory()">Anılarımıza Yolculuk Yap✨</button>
     </div>
 
@@ -119,32 +120,47 @@
         function showNext() {
             let media = document.getElementsByClassName("myMedia");
             let textDiv = document.getElementById("message-text");
+
             if (currentIndex >= media.length) {
-    textDiv.innerHTML = "Sonsuza dek seninle... ❤️ <br><br> <button class='heart-btn' id='restartBtn' style='padding: 10px 25px; font-size: 0.9rem;'>BAŞTAN İZLE</button>";
-    textDiv.style.opacity = "1";
+                textDiv.innerHTML = "Sonsuza dek seninle... ❤️ <br><br> <button class='heart-btn' id='restartBtn' style='padding: 10px 25px; font-size: 0.9rem;'>Baştan İzle</button>";
+                textDiv.style.opacity = "1";
 
-    // Butona tıklama özelliğini anında ekliyoruz
-    document.getElementById('restartBtn').addEventListener('click', restartStory);
+                document.getElementById('restartBtn').addEventListener('click', restartStory);
 
-    let fadeAudio = setInterval(function () {
-        if (mainMusic.volume > 0.05) { mainMusic.volume -= 0.05; } 
-        else { mainMusic.pause(); clearInterval(fadeAudio); }
-    }, 300);
-    return;
-}
+                let fadeAudio = setInterval(function () {
+                    if (mainMusic.volume > 0.05) { mainMusic.volume -= 0.05; } 
+                    else { mainMusic.pause(); clearInterval(fadeAudio); }
+                }, 300);
+                return;
             }
-            for (let i = 0; i < media.length; i++) { media[i].style.display = "none"; if(media[i].tagName === "VIDEO") media[i].pause(); }
+
+            for (let i = 0; i < media.length; i++) { 
+                media[i].style.display = "none"; 
+                if(media[i].tagName === "VIDEO") media[i].pause(); 
+            }
+
             let currentItem = media[currentIndex];
             currentItem.style.display = "block";
             textDiv.innerHTML = mesajlar[currentIndex];
             currentIndex++;
+
             if (currentItem.tagName === "VIDEO") {
-                currentItem.currentTime = 0; currentItem.play();
+                currentItem.currentTime = 0; 
+                currentItem.play();
                 currentItem.onended = () => showNext();
             } else {
                 let displayTime = (currentIndex === media.length) ? 8000 : 6000;
                 setTimeout(showNext, displayTime); 
             }
+        }
+
+        function restartStory() {
+            currentIndex = 0;
+            document.getElementById('clip-container').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+            mainMusic.pause();
+            mainMusic.currentTime = 0;
+            mainMusic.volume = 1;
         }
 
         function launchConfetti() {
@@ -154,26 +170,7 @@
                 confetti({ particleCount: 1, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#ff4081', '#ffffff'], zIndex: 0 });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
-            
         }
-         function restartStory() {
-    currentIndex = 0; // Sayacı sıfırla
-    document.getElementById('clip-container').style.display = 'none';
-    document.getElementById('start-screen').style.display = 'block';
-    
-    // Müziği durdur ve başa sar
-    mainMusic.pause();
-    mainMusic.currentTime = 0;
-    mainMusic.volume = 1; // Sesi tekrar aç
-}
-}
-}
     </script>
-   
 </body>
 </html>
-
-
-
-
-
