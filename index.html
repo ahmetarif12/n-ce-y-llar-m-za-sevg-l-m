@@ -88,15 +88,20 @@
         const mainMusic = document.getElementById('mainMusic');
         let currentIndex = 0;
 
+        // GİRİŞ FONKSİYONU
         function checkPassword() {
-            if(document.getElementById('passInput').value === "2240") {
+            const inputVal = document.getElementById('passInput').value;
+            if(inputVal === "2240") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('start-screen').style.display = 'block';
                 updateTimer();
                 setInterval(updateTimer, 1000);
-            } else { alert("Hatalı şifre hayatım!"); }
+            } else { 
+                alert("Hatalı şifre hayatım!"); 
+            }
         }
 
+        // SAYAÇ FONKSİYONU
         function updateTimer() {
             const start = new Date(TANIŞMA_TARİHİ);
             const now = new Date();
@@ -108,6 +113,7 @@
             document.getElementById('timer').innerText = `${days} Gün, ${hours} Saat, ${mins} Dakika, ${secs} Saniye`;
         }
 
+        // HİKAYEYİ BAŞLATMA
         function startStory() {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('clip-container').style.display = 'block';
@@ -117,6 +123,7 @@
             launchConfetti();
         }
 
+        // SIRADAKİ MEDYAYI GÖSTERME
         function showNext() {
             let media = document.getElementsByClassName("myMedia");
             let textDiv = document.getElementById("message-text");
@@ -125,6 +132,7 @@
                 textDiv.innerHTML = "Sonsuza dek seninle... ❤️ <br><br> <button class='heart-btn' id='restartBtn' style='padding: 10px 25px; font-size: 0.9rem;'>Baştan İzle</button>";
                 textDiv.style.opacity = "1";
 
+                // Baştan izle butonu tıklandığında restartStory çalışsın
                 document.getElementById('restartBtn').addEventListener('click', restartStory);
 
                 let fadeAudio = setInterval(function () {
@@ -134,11 +142,13 @@
                 return;
             }
 
+            // Önceki medyaları gizle
             for (let i = 0; i < media.length; i++) { 
                 media[i].style.display = "none"; 
                 if(media[i].tagName === "VIDEO") media[i].pause(); 
             }
 
+            // Aktif medyayı göster
             let currentItem = media[currentIndex];
             currentItem.style.display = "block";
             textDiv.innerHTML = mesajlar[currentIndex];
@@ -154,6 +164,7 @@
             }
         }
 
+        // SIFIRLAMA FONKSİYONU
         function restartStory() {
             currentIndex = 0;
             document.getElementById('clip-container').style.display = 'none';
@@ -163,6 +174,7 @@
             mainMusic.volume = 1;
         }
 
+        // KONFETİ EFEKTİ
         function launchConfetti() {
             var end = Date.now() + (10 * 1000);
             (function frame() {
