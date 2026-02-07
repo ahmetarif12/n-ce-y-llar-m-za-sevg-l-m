@@ -15,32 +15,32 @@
         .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff4081; margin-bottom: 10px; }
         .timer-text { font-size: 1.2rem; color: #ff80ab; font-weight: 600; margin: 15px 0; }
         
-        /* SİNEMATİK GEÇİŞLER */
         .media-box { width: 100%; height: 380px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 1px solid #333; position: relative; }
         .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: sinematikGecis 1.5s ease-in-out; }
         @keyframes sinematikGecis { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
         
-        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); }
+        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; color: #ff80ab; font-style: italic; }
         .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.3s; margin: 5px; text-transform: uppercase; }
         
-        /* NOTLAR IZGARASI */
         #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; padding-bottom: 40px; }
         .note-card { background: #111; border-radius: 15px; border: 1px solid #222; padding: 12px; text-align: left; position: relative; aspect-ratio: 1 / 1.41; display: flex; flex-direction: column; cursor: pointer; overflow: hidden; }
-        .note-card p { font-size: 0.75rem; color: #bbb; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+        .note-card p { font-size: 0.75rem; color: #bbb; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
         .note-card img { width: 100%; border-radius: 8px; background: white; margin-top: auto; padding: 4px; box-sizing: border-box; }
 
-        /* A4 SİYAH FORMATLI DETAY MODALI */
         #not-detay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; }
-        .a4-kagit { background: #080808; width: 100%; max-width: 550px; min-height: 750px; border: 1px solid #1a1a1a; padding: 40px; box-sizing: border-box; position: relative; box-shadow: 0 0 60px rgba(0,0,0,1); text-align: left; }
+        .a4-kagit { background: #080808; width: 100%; max-width: 550px; min-height: 750px; border: 1px solid #1a1a1a; padding: 40px; box-sizing: border-box; position: relative; text-align: left; }
 
         #canvas-preview { background: #fff; border-radius: 15px; width: 100%; height: 100px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; margin: 15px 0; overflow: hidden;}
         
-        /* ÇİZİM ALANI */
+        /* PROFESYONEL ÇİZİM PANELİ */
         #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 10100; flex-direction: column; }
-        #tool-bar { background: #f0f0f0; padding: 10px; display: flex; gap: 8px; overflow-x: auto; align-items: center; border-bottom: 1px solid #ccc; }
-        .tool-btn { padding: 8px; border-radius: 8px; border: 1px solid #bbb; background: white; cursor: pointer; min-width: 60px; font-size: 0.75rem; color: #333; }
+        #tool-bar { background: #f8f8f8; padding: 10px; display: flex; gap: 10px; overflow-x: auto; align-items: center; border-bottom: 2px solid #ddd; }
+        .tool-btn { padding: 8px 15px; border-radius: 10px; border: 1px solid #ccc; background: white; cursor: pointer; font-size: 0.8rem; color: #333; font-weight: 600; white-space: nowrap; }
         .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; }
-        #paint-canvas { flex-grow: 1; touch-action: none; background: white; }
+        #paint-canvas { flex-grow: 1; touch-action: none; background: white; cursor: crosshair; }
+
+        input[type="color"] { border: none; width: 45px; height: 45px; cursor: pointer; background: none; }
+        input[type="range"] { cursor: pointer; width: 100px; }
 
         input, textarea { background: #000; border: 1px solid #222; color: white; padding: 15px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1rem; outline: none; border-left: 3px solid #ff4081; }
     </style>
@@ -95,7 +95,7 @@
                 <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600;">📸 Slayt</button>
             </div>
             <h2 class="milat-baslik" style="font-size: 1.8rem;">Anı Defterimiz</h2>
-            <textarea id="noteInput" placeholder="Buraya içinden geçenleri dök sevgilim..."></textarea>
+            <textarea id="noteInput" placeholder="Buraya yaz sevgilim..."></textarea>
             <div id="canvas-preview" onclick="openDrawingModal()"><span>🎨 Çizim Ekle (Beyaz Tuval)</span></div>
             <button id="save-btn" class="heart-btn" onclick="saveNote()">Notu Kaydet ❤️</button>
             <div id="notes-grid"></div>
@@ -108,21 +108,23 @@
             <button id="detay-duzenle-btn" class="heart-btn" style="background: #007bff;">Düzenle ✏️</button>
         </div>
         <div class="a4-kagit">
-            <small id="detay-tarih" style="color: #ff80ab; display: block; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;"></small>
-            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 30px;"></p>
-            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 15px; box-sizing: border-box; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+            <small id="detay-tarih" style="color: #ff80ab; display: block; margin-bottom: 15px;"></small>
+            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 25px;"></p>
+            <img id="detay-resim" style="width: 100%; border-radius: 8px; background: white; padding: 10px; display: none; box-sizing: border-box;">
         </div>
-        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 30px; background: #c82333; font-size: 0.8rem;">Bu Anıyı Sil 🗑️</button>
+        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 20px; background: #c82333; font-size: 0.7rem;">Anıyı Sil 🗑️</button>
     </div>
 
     <div id="drawing-modal">
         <div id="tool-bar">
             <button class="tool-btn active" id="penBtn" onclick="setTool('pen')">Kalem</button>
-            <button class="tool-btn" id="glowBtn" onclick="setTool('glow')">Parlama</button>
+            <button class="tool-btn" id="markerBtn" onclick="setTool('marker')">Keçeli</button>
+            <button class="tool-btn" id="pastelBtn" onclick="setTool('pastel')">Pastel</button>
+            <button class="tool-btn" id="glowBtn" onclick="setTool('glow')">Fosfor</button>
             <button class="tool-btn" onclick="setTool('eraser')">Silgi</button>
-            <input type="color" id="colorPicker" value="#ff4081">
-            <input type="range" id="sizePicker" min="1" max="50" value="5">
-            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left: auto; padding: 8px 15px;">BİTTİ</button>
+            <input type="color" id="colorPicker" title="Renk Seç">
+            <input type="range" id="sizePicker" min="1" max="60" value="5" title="Boyut">
+            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left: auto; padding: 8px 15px;">TAMAM</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
@@ -141,7 +143,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 localStorage.getItem('ask_notlari') ? goToMenu() : startStory();
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Yanlış şifre sevgilim!");
+            } else alert("Hatalı!");
         }
 
         function updateTimer() {
@@ -150,30 +152,6 @@
             const txt = `${d} Gün, ${h}:${m}:${s}`;
             if(document.getElementById('timer-menu')) document.getElementById('timer-menu').innerText = txt;
             if(document.getElementById('timer-main')) document.getElementById('timer-main').innerText = txt;
-        }
-
-        function startStory() {
-            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-            document.getElementById('clip-container').style.display = 'flex';
-            currentIndex = 0;
-            mainMusic.currentTime = 0;
-            mainMusic.play();
-            showNext();
-        }
-
-        function showNext() {
-            let media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text");
-            if (currentIndex >= media.length) {
-                mainMusic.pause(); // Müzik sadece slaytta çalsın
-                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Yeniden İzle</button>
-                                     <button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`;
-                return;
-            }
-            for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); }
-            media[currentIndex].style.display = "block"; textDiv.innerHTML = mesajlar[currentIndex];
-            if (media[currentIndex].tagName === "VIDEO") {
-                media[currentIndex].play(); media[currentIndex].onended = () => { currentIndex++; showNext(); };
-            } else { currentIndex++; setTimeout(showNext, 6000); }
         }
 
         function openDrawingModal() {
@@ -188,25 +166,37 @@
                 const r = canvas.getBoundingClientRect();
                 return { x: (e.clientX || e.touches[0].clientX) - r.left, y: (e.clientY || e.touches[0].clientY) - r.top };
             };
-            canvas.onmousedown = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
-            canvas.onmousemove = (e) => {
-                if(!drawing) return; const p = getPos(e);
-                ctx.lineWidth = document.getElementById('sizePicker').value;
-                ctx.strokeStyle = document.getElementById('colorPicker').value;
-                if(currentTool === 'glow') { ctx.shadowBlur = 10; ctx.shadowColor = ctx.strokeStyle; } else { ctx.shadowBlur = 0; }
+            const start = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+            const move = (e) => {
+                if(!drawing) return;
+                const p = getPos(e);
+                const size = document.getElementById('sizePicker').value;
+                const color = document.getElementById('colorPicker').value;
+
+                ctx.lineWidth = size;
+                ctx.strokeStyle = color;
+                
+                // ARAÇ ÖZELLİKLERİ
+                ctx.shadowBlur = 0; ctx.globalAlpha = 1.0;
+                if(currentTool === 'pastel') { ctx.globalAlpha = 0.3; ctx.lineWidth = size * 1.5; }
+                else if(currentTool === 'glow') { ctx.shadowBlur = size/2; ctx.shadowColor = color; }
+                else if(currentTool === 'marker') { ctx.globalAlpha = 0.5; ctx.lineWidth = size * 1.2; }
+
                 ctx.lineTo(p.x, p.y); ctx.stroke();
             };
-            window.onmouseup = () => drawing = false;
-            canvas.ontouchstart = (e) => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
-            canvas.ontouchmove = (e) => { e.preventDefault(); if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
-            canvas.ontouchend = () => drawing = false;
+            const stop = () => { drawing = false; ctx.beginPath(); };
+
+            canvas.onmousedown = start; canvas.onmousemove = move; window.onmouseup = stop;
+            canvas.ontouchstart = (e) => { e.preventDefault(); start(e); };
+            canvas.ontouchmove = (e) => { e.preventDefault(); move(e); };
+            canvas.ontouchend = stop;
         }
 
         function setTool(tool) {
             currentTool = tool;
             ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
             document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            if(document.getElementById(tool + 'Btn')) document.getElementById(tool + 'Btn').classList.add('active');
+            document.getElementById(tool + 'Btn')?.classList.add('active');
         }
 
         function closeDrawingModal() {
@@ -215,7 +205,7 @@
         }
 
         function openNoteScreen() {
-            mainMusic.pause(); // Menüye geçince şarkıyı sustur
+            mainMusic.pause();
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
             document.getElementById('note-screen').style.display = 'flex';
             displayNotes();
@@ -237,16 +227,13 @@
 
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
             confetti({ particleCount: 100 });
-            resetNoteForm();
-            displayNotes();
+            resetForm(); displayNotes();
         }
 
-        function resetNoteForm() {
+        function resetForm() {
             document.getElementById('noteInput').value = "";
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle</span>";
-            editId = null;
-            document.getElementById('save-btn').innerText = "Notu Kaydet ❤️";
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle (Beyaz Tuval)</span>";
         }
 
         function displayNotes() {
@@ -268,7 +255,7 @@
             if(n.image) { img.src = n.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
 
             document.getElementById('detay-sil-btn').onclick = () => {
-                if(confirm("Bu anıyı silelim mi?")) {
+                if(confirm("Silelim mi sevgilim?")) {
                     let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
                     notes = notes.filter(note => note.id !== n.id);
                     localStorage.setItem('ask_notlari', JSON.stringify(notes));
@@ -282,26 +269,36 @@
                 document.getElementById('noteInput').value = n.text || '';
                 if(n.image) {
                     const tempImg = new Image();
-                    tempImg.onload = () => {
-                        ctx.clearRect(0,0,canvas.width,canvas.height);
-                        ctx.drawImage(tempImg,0,0);
-                        document.getElementById('canvas-preview').innerHTML = `<img src="${n.image}" style="max-height:100%">`;
-                    };
+                    tempImg.onload = () => { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(tempImg,0,0); closeDrawingModal(); };
                     tempImg.src = n.image;
-                } else {
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                    document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle</span>";
-                }
+                } else { ctx.clearRect(0,0,canvas.width,canvas.height); document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle</span>"; }
                 document.getElementById('save-btn').innerText = "Değişiklikleri Kaydet ✨";
                 document.getElementById('not-detay-modal').style.display = 'none';
             };
         }
 
-        function goToMenu() {
-            mainMusic.pause(); // Menüye geçince müziği sustur
+        function startStory() {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-            document.getElementById('menu-screen').style.display = 'flex';
+            document.getElementById('clip-container').style.display = 'flex';
+            currentIndex = 0; mainMusic.currentTime = 0; mainMusic.play(); showNext();
         }
+
+        function showNext() {
+            let media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text");
+            if (currentIndex >= media.length) {
+                mainMusic.pause();
+                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Baştan İzle</button>
+                                     <button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`;
+                return;
+            }
+            for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); }
+            media[currentIndex].style.display = "block"; textDiv.innerHTML = mesajlar[currentIndex];
+            if (media[currentIndex].tagName === "VIDEO") {
+                media[currentIndex].play(); media[currentIndex].onended = () => { currentIndex++; showNext(); };
+            } else { currentIndex++; setTimeout(showNext, 6000); }
+        }
+
+        function goToMenu() { mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('menu-screen').style.display = 'flex'; }
     </script>
 </body>
 </html>
