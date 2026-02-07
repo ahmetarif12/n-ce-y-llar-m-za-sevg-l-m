@@ -15,34 +15,37 @@
         .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff4081; margin-bottom: 10px; }
         .timer-text { font-size: 1.2rem; color: #ff80ab; font-weight: 600; margin: 15px 0; }
         
+        /* SİNEMATİK GEÇİŞLER */
         .media-box { width: 100%; height: 380px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 1px solid #333; position: relative; }
         .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: sinematikGecis 1.5s ease-in-out; }
         @keyframes sinematikGecis { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
         
         .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; color: #ff80ab; font-style: italic; }
         .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.3s; margin: 5px; text-transform: uppercase; }
-        
+
+        /* NOTLAR IZGARASI (A4 FORMATI) */
         #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; padding-bottom: 40px; }
-        .note-card { background: #111; border-radius: 15px; border: 1px solid #222; padding: 12px; text-align: left; position: relative; aspect-ratio: 1 / 1.41; display: flex; flex-direction: column; cursor: pointer; overflow: hidden; }
-        .note-card p { font-size: 0.75rem; color: #bbb; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+        .note-card { background: #111; border-radius: 15px; border: 1px solid #222; padding: 12px; text-align: left; position: relative; aspect-ratio: 1 / 1.41; display: flex; flex-direction: column; cursor: pointer; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .note-card p { font-size: 0.75rem; color: #bbb; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
         .note-card img { width: 100%; border-radius: 8px; background: white; margin-top: auto; padding: 4px; box-sizing: border-box; }
 
+        /* DETAY MODAL */
         #not-detay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; }
         .a4-kagit { background: #080808; width: 100%; max-width: 550px; min-height: 750px; border: 1px solid #1a1a1a; padding: 40px; box-sizing: border-box; position: relative; text-align: left; }
 
-        #canvas-preview { background: #fff; border-radius: 15px; width: 100%; height: 100px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; margin: 15px 0; overflow: hidden;}
-        
-        /* PROFESYONEL ÇİZİM PANELİ */
+        #canvas-preview { background: #fff; border-radius: 15px; width: 100%; height: 100px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; margin: 15px 0; font-weight: 600; }
+
+        /* PROFESYONEL ÇİZİM PANELİ (BÜYÜK BUTONLAR) */
         #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 10100; flex-direction: column; }
-        #tool-bar { background: #f8f8f8; padding: 10px; display: flex; gap: 10px; overflow-x: auto; align-items: center; border-bottom: 2px solid #ddd; }
-        .tool-btn { padding: 8px 15px; border-radius: 10px; border: 1px solid #ccc; background: white; cursor: pointer; font-size: 0.8rem; color: #333; font-weight: 600; white-space: nowrap; }
-        .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; }
+        #tool-bar { background: #f0f0f0; padding: 15px; display: flex; gap: 12px; overflow-x: auto; align-items: center; border-bottom: 2px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .tool-btn { padding: 12px 20px; border-radius: 15px; border: 2px solid #ccc; background: white; cursor: pointer; min-width: 80px; font-size: 1rem; color: #333; font-weight: 600; transition: 0.2s; }
+        .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; transform: scale(1.05); }
         #paint-canvas { flex-grow: 1; touch-action: none; background: white; cursor: crosshair; }
+        
+        #colorPicker { width: 60px; height: 60px; border: none; padding: 0; cursor: pointer; border-radius: 50%; overflow: hidden; }
+        #sizePicker { width: 150px; height: 10px; cursor: pointer; }
 
-        input[type="color"] { border: none; width: 45px; height: 45px; cursor: pointer; background: none; }
-        input[type="range"] { cursor: pointer; width: 100px; }
-
-        input, textarea { background: #000; border: 1px solid #222; color: white; padding: 15px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1rem; outline: none; border-left: 3px solid #ff4081; }
+        input, textarea { background: #000; border: 1px solid #222; color: white; padding: 15px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1rem; border-left: 3px solid #ff4081; }
     </style>
 </head>
 <body>
@@ -95,7 +98,7 @@
                 <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600;">📸 Slayt</button>
             </div>
             <h2 class="milat-baslik" style="font-size: 1.8rem;">Anı Defterimiz</h2>
-            <textarea id="noteInput" placeholder="Buraya yaz sevgilim..."></textarea>
+            <textarea id="noteInput" placeholder="Buraya içinden geçenleri dök sevgilim..."></textarea>
             <div id="canvas-preview" onclick="openDrawingModal()"><span>🎨 Çizim Ekle (Beyaz Tuval)</span></div>
             <button id="save-btn" class="heart-btn" onclick="saveNote()">Notu Kaydet ❤️</button>
             <div id="notes-grid"></div>
@@ -108,11 +111,11 @@
             <button id="detay-duzenle-btn" class="heart-btn" style="background: #007bff;">Düzenle ✏️</button>
         </div>
         <div class="a4-kagit">
-            <small id="detay-tarih" style="color: #ff80ab; display: block; margin-bottom: 15px;"></small>
-            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 25px;"></p>
-            <img id="detay-resim" style="width: 100%; border-radius: 8px; background: white; padding: 10px; display: none; box-sizing: border-box;">
+            <small id="detay-tarih" style="color: #ff80ab; display: block; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;"></small>
+            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 30px;"></p>
+            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 15px; box-sizing: border-box; display: none;">
         </div>
-        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 20px; background: #c82333; font-size: 0.7rem;">Anıyı Sil 🗑️</button>
+        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 30px; background: #c82333;">Anıyı Sil 🗑️</button>
     </div>
 
     <div id="drawing-modal">
@@ -122,9 +125,9 @@
             <button class="tool-btn" id="pastelBtn" onclick="setTool('pastel')">Pastel</button>
             <button class="tool-btn" id="glowBtn" onclick="setTool('glow')">Fosfor</button>
             <button class="tool-btn" onclick="setTool('eraser')">Silgi</button>
-            <input type="color" id="colorPicker" title="Renk Seç">
-            <input type="range" id="sizePicker" min="1" max="60" value="5" title="Boyut">
-            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left: auto; padding: 8px 15px;">TAMAM</button>
+            <input type="color" id="colorPicker" value="#ff4081">
+            <input type="range" id="sizePicker" min="1" max="60" value="5">
+            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left: auto; padding: 10px 25px;">KAYDET</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
@@ -143,7 +146,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 localStorage.getItem('ask_notlari') ? goToMenu() : startStory();
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Hatalı!");
+            } else alert("Yanlış!");
         }
 
         function updateTimer() {
@@ -156,7 +159,7 @@
 
         function openDrawingModal() {
             document.getElementById('drawing-modal').style.display = 'flex';
-            if(canvas.width === 0) { canvas.width = window.innerWidth; canvas.height = window.innerHeight - 70; }
+            if(canvas.width === 0) { canvas.width = window.innerWidth; canvas.height = window.innerHeight - 80; }
             ctx.lineCap = 'round'; ctx.lineJoin = 'round';
             initDrawing();
         }
@@ -176,16 +179,14 @@
                 ctx.lineWidth = size;
                 ctx.strokeStyle = color;
                 
-                // ARAÇ ÖZELLİKLERİ
                 ctx.shadowBlur = 0; ctx.globalAlpha = 1.0;
-                if(currentTool === 'pastel') { ctx.globalAlpha = 0.3; ctx.lineWidth = size * 1.5; }
-                else if(currentTool === 'glow') { ctx.shadowBlur = size/2; ctx.shadowColor = color; }
-                else if(currentTool === 'marker') { ctx.globalAlpha = 0.5; ctx.lineWidth = size * 1.2; }
+                if(currentTool === 'pastel') { ctx.globalAlpha = 0.3; ctx.lineWidth = size * 2; }
+                else if(currentTool === 'glow') { ctx.shadowBlur = size; ctx.shadowColor = color; }
+                else if(currentTool === 'marker') { ctx.globalAlpha = 0.5; ctx.lineWidth = size * 1.5; }
 
                 ctx.lineTo(p.x, p.y); ctx.stroke();
             };
             const stop = () => { drawing = false; ctx.beginPath(); };
-
             canvas.onmousedown = start; canvas.onmousemove = move; window.onmouseup = stop;
             canvas.ontouchstart = (e) => { e.preventDefault(); start(e); };
             canvas.ontouchmove = (e) => { e.preventDefault(); move(e); };
@@ -219,21 +220,20 @@
 
             if(editId) {
                 notes = notes.map(n => n.id === editId ? { ...n, text, image } : n);
-                editId = null;
-                document.getElementById('save-btn').innerText = "Notu Kaydet ❤️";
+                editId = null; document.getElementById('save-btn').innerText = "Notu Kaydet ❤️";
             } else {
                 notes.unshift({ id: Date.now(), text, image, date: new Date().toLocaleString('tr-TR') });
             }
 
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
             confetti({ particleCount: 100 });
-            resetForm(); displayNotes();
+            resetNoteForm(); displayNotes();
         }
 
-        function resetForm() {
+        function resetNoteForm() {
             document.getElementById('noteInput').value = "";
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle (Beyaz Tuval)</span>";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle</span>";
         }
 
         function displayNotes() {
