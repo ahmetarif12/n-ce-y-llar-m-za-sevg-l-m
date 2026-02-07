@@ -21,7 +21,7 @@
         @keyframes sinematikGecis { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
         
         .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); }
-        .heart-btn { background: #ff4081; color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.3s; margin: 5px; text-transform: uppercase; }
+        .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.3s; margin: 5px; text-transform: uppercase; }
 
         /* NOTLAR IZGARASI */
         #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; padding-bottom: 40px; }
@@ -29,22 +29,23 @@
         .note-card p { font-size: 0.75rem; color: #bbb; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; margin: 5px 0; }
         .note-card img { width: 100%; border-radius: 8px; background: white; margin-top: auto; padding: 4px; box-sizing: border-box; }
 
-        /* MODALLAR (YAZI VE ÇİZİM İÇİN) */
+        /* MODALLAR */
         .full-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; padding: 20px; box-sizing: border-box; }
         .a4-kagit { background: #080808; width: 100%; max-width: 550px; min-height: 750px; border: 1px solid #1a1a1a; padding: 40px; box-sizing: border-box; position: relative; text-align: left; margin: 0 auto; }
         
-        /* ÇİZİM PANELİ ARAÇLARI */
-        #drawing-modal { background: #fff; }
-        #tool-bar { background: #f0f0f0; padding: 15px; display: flex; gap: 10px; overflow-x: auto; align-items: center; border-bottom: 2px solid #ddd; }
-        .tool-btn { padding: 12px 18px; border-radius: 12px; border: 2px solid #ccc; background: white; cursor: pointer; min-width: 85px; font-size: 0.95rem; color: #333; font-weight: 600; white-space: nowrap; }
-        .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; }
-        #paint-canvas { flex-grow: 1; touch-action: none; background: white; cursor: crosshair; }
+        /* PROFESYONEL ÇİZİM STÜDYOSU ARAYÜZÜ */
+        #drawing-modal { background: #fdfdfd; padding: 0; }
+        .studio-header { background: #1a1a1a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; color: white; z-index: 10; }
+        .studio-tools { background: #f0f0f0; padding: 12px; display: flex; gap: 10px; overflow-x: auto; align-items: center; border-bottom: 1px solid #ddd; }
+        .tool-icon { padding: 10px 15px; border-radius: 12px; border: 1px solid #ccc; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #333; white-space: nowrap; transition: 0.2s; }
+        .tool-icon.active { background: #ff4081; color: white; border-color: #ff4081; box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3); }
+        #paint-canvas { flex-grow: 1; touch-action: none; background: #fff; cursor: crosshair; }
+        
+        input[type="color"] { width: 45px; height: 45px; border: none; border-radius: 50%; cursor: pointer; background: none; }
+        #size-label { color: #333; font-size: 0.8rem; font-weight: bold; margin-left: 5px; }
 
         input, textarea { background: #000; border: 1px solid #222; color: white; padding: 15px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1.1rem; outline: none; border-left: 3px solid #ff4081; }
         textarea { height: 250px; resize: none; }
-        
-        #colorPicker { width: 50px; height: 50px; border: none; cursor: pointer; border-radius: 50%; padding: 0; background: none; }
-        #sizePicker { width: 120px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -100,7 +101,7 @@
                 <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600;">📸 Slayt</button>
             </div>
             <h2 class="milat-baslik" style="font-size: 1.8rem;">Anı Defterimiz</h2>
-            <div style="display: flex; gap: 10px; justify-content: center;">
+            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
                 <button class="heart-btn" onclick="openWriteModal()">📝 Yazı Yaz</button>
                 <button class="heart-btn" onclick="openDrawingModal()" style="background:#ad1457;">🎨 Çizim Yap</button>
             </div>
@@ -117,17 +118,24 @@
         </div>
     </div>
 
-    <div id="drawing-modal" class="full-modal" style="padding:0;">
-        <div id="tool-bar">
-            <button class="tool-btn active" id="penBtn" onclick="setTool('pen')">Kalem</button>
-            <button class="tool-btn" id="markerBtn" onclick="setTool('marker')">Keçeli</button>
-            <button class="tool-btn" id="pastelBtn" onclick="setTool('pastel')">Pastel</button>
-            <button class="tool-btn" id="glowBtn" onclick="setTool('glow')">Fosfor</button>
-            <button class="tool-btn" onclick="setTool('eraser')">Silgi</button>
+    <div id="drawing-modal" class="full-modal">
+        <div class="studio-header">
+            <span>🎨 Çizim Stüdyosu</span>
+            <div>
+                <button onclick="saveNote()" style="background:#ff4081; color:white; border:none; padding:8px 15px; border-radius:10px; font-weight:bold; cursor:pointer;">KAYDET</button>
+                <button onclick="closeModals()" style="background:#444; color:white; border:none; padding:8px 15px; border-radius:10px; margin-left:10px; cursor:pointer;">KAPAT</button>
+            </div>
+        </div>
+        <div class="studio-tools">
+            <button class="tool-icon active" id="penBtn" onclick="setTool('pen')">✏️ Kalem</button>
+            <button class="tool-icon" id="markerBtn" onclick="setTool('marker')">🖌️ Keçeli</button>
+            <button class="tool-icon" id="pastelBtn" onclick="setTool('pastel')">🖍️ Pastel</button>
+            <button class="tool-icon" id="glowBtn" onclick="setTool('glow')">✨ Fosfor</button>
+            <button class="tool-icon" onclick="setTool('eraser')">🧹 Silgi</button>
             <input type="color" id="colorPicker" value="#ff4081">
-            <input type="range" id="sizePicker" min="1" max="60" value="5">
-            <button class="heart-btn" onclick="saveNote()" style="padding: 10px 20px; margin-left: auto;">KAYDET</button>
-            <button class="heart-btn" onclick="closeModals()" style="background:#333; padding: 10px 20px;">KAPAT</button>
+            <input type="range" id="sizePicker" min="1" max="50" value="5">
+            <span id="size-label">5px</span>
+            <button class="tool-icon" onclick="ctx.clearRect(0,0,canvas.width,canvas.height)" style="background:#ffcdd2;">🗑️ Temizle</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
@@ -140,8 +148,8 @@
         </div>
         <div class="a4-kagit">
             <small id="detay-tarih" style="color: #ff80ab; display: block; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;"></small>
-            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 30px;"></p>
-            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 15px; box-sizing: border-box; display: none;">
+            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 30px; color: #fff;"></p>
+            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 10px; box-sizing: border-box; display: none;">
         </div>
     </div>
 
@@ -150,6 +158,7 @@
         const mesajlar = ["Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...", "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.", "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.", "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.", "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.", "Zamanın durmasını istediğim binlerce andan sadece biri...", "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.", "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans!", "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.", "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.", "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.", "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.", "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.", "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.", "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)"];
 
         let currentIndex = 0, drawing = false, currentTool = 'pen', editId = null;
+        let lastX = 0, lastY = 0;
         const canvas = document.getElementById('paint-canvas');
         const ctx = canvas.getContext('2d');
         const mainMusic = document.getElementById('mainMusic');
@@ -159,7 +168,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 localStorage.getItem('ask_notlari') ? goToMenu() : document.getElementById('start-screen').style.display = 'flex';
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Yanlış şifre sevgilim!");
+            } else alert("Yanlış!");
         }
 
         function updateTimer() {
@@ -170,11 +179,12 @@
             if(document.getElementById('timer-menu')) document.getElementById('timer-menu').innerText = txt;
         }
 
-        /* MODAL YÖNETİMİ */
+        /* MODALLAR */
         function openWriteModal() { document.getElementById('write-modal').style.display = 'flex'; }
         function openDrawingModal() {
             document.getElementById('drawing-modal').style.display = 'flex';
-            if(canvas.width === 0) { canvas.width = window.innerWidth; canvas.height = window.innerHeight - 80; }
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - document.querySelector('.studio-header').offsetHeight - document.querySelector('.studio-tools').offsetHeight;
             initDrawing();
         }
         function closeModals() {
@@ -182,45 +192,67 @@
             editId = null; resetForm();
         }
 
-        /* ÇİZİM MOTORU */
+        /* PROFESYONEL ÇİZİM SİSTEMİ */
         function initDrawing() {
             const getPos = (e) => {
                 const r = canvas.getBoundingClientRect();
-                return { x: (e.clientX || e.touches[0].clientX) - r.left, y: (e.clientY || e.touches[0].clientY) - r.top };
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - r.left, y: clientY - r.top };
             };
-            canvas.onmousedown = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-            canvas.onmousemove = (e) => {
-                if(!drawing) return; const p = getPos(e);
+            const start = (e) => {
+                drawing = true;
+                const pos = getPos(e);
+                [lastX, lastY] = [pos.x, pos.y];
+            };
+            const draw = (e) => {
+                if (!drawing) return;
+                const pos = getPos(e);
                 const size = document.getElementById('sizePicker').value;
                 const color = document.getElementById('colorPicker').value;
-                ctx.lineWidth = size; ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(pos.x, pos.y);
+                
+                ctx.lineWidth = size;
+                ctx.strokeStyle = color;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
                 
                 ctx.shadowBlur = 0; ctx.globalAlpha = 1.0;
-                if(currentTool === 'pastel') { ctx.globalAlpha = 0.3; ctx.lineWidth = size * 2; }
+                if(currentTool === 'pastel') { ctx.globalAlpha = 0.3; ctx.lineWidth = size * 2.5; }
                 else if(currentTool === 'glow') { ctx.shadowBlur = size; ctx.shadowColor = color; }
-                else if(currentTool === 'marker') { ctx.globalAlpha = 0.5; ctx.lineWidth = size * 1.5; }
-
-                ctx.lineTo(p.x, p.y); ctx.stroke();
+                else if(currentTool === 'marker') { ctx.globalAlpha = 0.6; ctx.lineWidth = size * 1.8; }
+                
+                ctx.stroke();
+                [lastX, lastY] = [pos.x, pos.y];
             };
-            window.onmouseup = () => drawing = false;
-            canvas.ontouchstart = (e) => { e.preventDefault(); drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-            canvas.ontouchmove = (e) => { e.preventDefault(); if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
-            canvas.ontouchend = () => drawing = false;
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', () => drawing = false);
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+            canvas.addEventListener('touchend', () => drawing = false);
         }
 
         function setTool(tool) {
             currentTool = tool;
             ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
-            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tool-icon').forEach(b => b.classList.remove('active'));
             document.getElementById(tool + 'Btn')?.classList.add('active');
         }
 
-        /* KAYIT VE LİSTELEME */
+        document.getElementById('sizePicker').oninput = function() {
+            document.getElementById('size-label').innerText = this.value + "px";
+        };
+
+        /* KAYIT */
         function saveNote() {
             const text = document.getElementById('noteInput').value;
             const isCanvasEmpty = ctx.getImageData(0,0,canvas.width,canvas.height).data.every(p => p === 0);
             const image = isCanvasEmpty ? null : canvas.toDataURL();
-            if(!text.trim() && !image) return alert("Boş not kaydedilemez!");
+            if(!text.trim() && !image) return;
 
             let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
             if(editId) {
@@ -257,14 +289,13 @@
             if(n.image) { img.src = n.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
 
             document.getElementById('detay-sil-btn').onclick = () => {
-                if(confirm("Bu anıyı silelim mi sevgilim?")) {
+                if(confirm("Silelim mi sevgilim?")) {
                     let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
                     notes = notes.filter(note => note.id !== n.id);
                     localStorage.setItem('ask_notlari', JSON.stringify(notes));
                     closeModals(); displayNotes();
                 }
             };
-
             document.getElementById('detay-duzenle-btn').onclick = () => {
                 editId = n.id;
                 document.getElementById('noteInput').value = n.text || '';
@@ -277,7 +308,7 @@
             };
         }
 
-        /* SLAYT VE NAVİGASYON */
+        /* SLAYT VE MÜZİK */
         function startStory() {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
             document.getElementById('clip-container').style.display = 'flex';
