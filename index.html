@@ -27,7 +27,7 @@
 
         /* A4 Siyah Formatlı Detay Modalı */
         #not-detay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; }
-        .a4-kagit { background: #050505; width: 100%; max-width: 500px; min-height: 707px; border: 1px solid #222; padding: 30px; box-sizing: border-box; position: relative; text-align: left; box-shadow: 0 0 40px rgba(0,0,0,1); }
+        .a4-kagit { background: #050505; width: 100%; max-width: 500px; min-height: 707px; border: 1px solid #222; padding: 30px; box-sizing: border-box; position: relative; text-align: left; }
 
         #canvas-preview { background: #fff; border-radius: 15px; width: 100%; height: 100px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; margin: 15px 0; overflow: hidden;}
         #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 10100; flex-direction: column; }
@@ -44,9 +44,9 @@
     <div id="login-screen" class="screen">
         <div class="glass-card">
             <h2 class="milat-baslik">Kalbimin Anahtarı? ❤️</h2>
-            <input type="password" id="passInput" placeholder="Şifre...">
+            <input type="password" id="passInput" placeholder="Sadece Bize Özel Şifre...">
             <br><br>
-            <button class="heart-btn" onclick="checkPassword()">Kapıyı Arala</button>
+            <button class="heart-btn" onclick="checkPassword()">Aşkımızın Kapısını Arala</button>
         </div>
     </div>
 
@@ -56,6 +56,11 @@
             <div id="timer-menu" class="timer-text"></div>
             <button class="heart-btn" onclick="startStory()">Anılarımızı İzle 📸</button>
             <button class="heart-btn" onclick="openNoteScreen()">Aşk Notlarımız 📝</button>
+            <div style="margin-top: 20px; font-size: 0.7rem;">
+                <button onclick="exportNotes()" style="background:none; border:none; color:#ff80ab; cursor:pointer;">Notları Yedekle (Dosya)</button> | 
+                <label for="importFile" style="color:#ff80ab; cursor:pointer;">Notları Yükle</label>
+                <input type="file" id="importFile" style="display:none" onchange="importNotes(this)">
+            </div>
         </div>
     </div>
 
@@ -65,9 +70,9 @@
                 <button onclick="goToMenu()" style="background:none; border:none; color:#ff80ab; cursor:pointer;">🏠 Menü</button>
                 <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer;">📸 Slayt</button>
             </div>
-            <h2 class="milat-baslik" style="font-size: 1.8rem;">Anı Defterimiz</h2>
-            <textarea id="noteInput" placeholder="İçinden geçenleri yaz..."></textarea>
-            <div id="canvas-preview" onclick="openDrawingModal()"><span>🎨 Çizim Ekle</span></div>
+            <h2 class="milat-baslik" style="font-size: 1.8rem;">Geleceğimize Not Bırak</h2>
+            <textarea id="noteInput" placeholder="Buraya yaz sevgilim..."></textarea>
+            <div id="canvas-preview" onclick="openDrawingModal()"><span>🎨 Çizim Ekle (Beyaz Ekran)</span></div>
             <button id="save-btn" class="heart-btn" onclick="saveNote()">Notu Kaydet ❤️</button>
             <div id="notes-grid"></div>
         </div>
@@ -83,7 +88,7 @@
             <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap; margin-bottom: 25px;"></p>
             <img id="detay-resim" style="width: 100%; border-radius: 8px; background: white; padding: 10px; box-sizing: border-box; display: none;">
         </div>
-        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 20px; background: #c82333;">Bu Notu Sil 🗑️</button>
+        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 20px; background: #c82333;">Bu Anıyı Sil 🗑️</button>
     </div>
 
     <div id="drawing-modal">
@@ -93,7 +98,7 @@
             <button class="tool-btn" onclick="setTool('eraser')">Silgi</button>
             <input type="color" id="colorPicker" value="#ff4081">
             <input type="range" id="sizePicker" min="1" max="50" value="5">
-            <button class="heart-btn" onclick="closeDrawingModal()" style="padding: 8px 15px; margin-left: auto;">BİTTİ</button>
+            <button class="heart-btn" onclick="closeDrawingModal()" style="padding: 8px 15px; margin-left: auto;">TAMAM</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
@@ -127,7 +132,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 localStorage.getItem('ask_notlari') ? goToMenu() : startStory();
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Yanlış şifre!");
+            } else alert("Hatalı!");
         }
 
         function updateTimer() {
@@ -139,7 +144,10 @@
 
         function openDrawingModal() {
             document.getElementById('drawing-modal').style.display = 'flex';
-            if(canvas.width === 0) { canvas.width = window.innerWidth; canvas.height = window.innerHeight - 70; }
+            if(canvas.width === 0 || canvas.width !== window.innerWidth) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight - 70;
+            }
             ctx.lineCap = 'round'; ctx.lineJoin = 'round'; initDrawing();
         }
 
@@ -196,22 +204,22 @@
 
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
             confetti({ particleCount: 100 });
-            resetNoteForm();
+            resetForm();
             displayNotes();
         }
 
-        function resetNoteForm() {
-            document.getElementById('noteInput').value = "";
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle</span>";
+        function resetForm() {
             editId = null;
+            document.getElementById('noteInput').value = "";
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle (Beyaz Ekran)</span>";
             document.getElementById('save-btn').innerText = "Notu Kaydet ❤️";
         }
 
         function displayNotes() {
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
             document.getElementById('notes-grid').innerHTML = notes.map(n => `
-                <div class="note-card" onclick='viewNote(${JSON.stringify(n)})'>
+                <div class="note-card" onclick='viewNote(${JSON.stringify(n).replace(/'/g, "&apos;")})'>
                     <small style="color:#ff80ab">${n.date}</small>
                     <p>${n.text || ''}</p>
                     ${n.image ? `<img src="${n.image}">` : ''}
@@ -226,7 +234,6 @@
             const img = document.getElementById('detay-resim');
             if(n.image) { img.src = n.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
 
-            // Silme İşlemi
             document.getElementById('detay-sil-btn').onclick = () => {
                 if(confirm("Bu anıyı silelim mi?")) {
                     let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
@@ -237,15 +244,17 @@
                 }
             };
 
-            // Düzenleme İşlemi
             document.getElementById('detay-duzenle-btn').onclick = () => {
                 editId = n.id;
                 document.getElementById('noteInput').value = n.text || '';
                 if(n.image) {
                     const tempImg = new Image();
-                    tempImg.onload = () => { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(tempImg,0,0); };
+                    tempImg.onload = () => {
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.drawImage(tempImg,0,0);
+                        document.getElementById('canvas-preview').innerHTML = `<img src="${n.image}" style="max-height:100%">`;
+                    };
                     tempImg.src = n.image;
-                    document.getElementById('canvas-preview').innerHTML = `<img src="${n.image}" style="max-height:100%">`;
                 } else {
                     ctx.clearRect(0,0,canvas.width,canvas.height);
                     document.getElementById('canvas-preview').innerHTML = "<span>🎨 Çizim Ekle</span>";
@@ -254,6 +263,24 @@
                 document.getElementById('not-detay-modal').style.display = 'none';
                 window.scrollTo(0,0);
             };
+        }
+
+        function exportNotes() {
+            const data = localStorage.getItem('ask_notlari');
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'ask_notlari_yedek.json'; a.click();
+        }
+
+        function importNotes(input) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                localStorage.setItem('ask_notlari', reader.result);
+                alert("Notlar başarıyla yüklendi!");
+                displayNotes();
+            };
+            reader.readAsText(input.files[0]);
         }
 
         function startStory() {
@@ -265,7 +292,7 @@
         function showNext() {
             let media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text");
             if (currentIndex >= media.length) {
-                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Yeniden İzle</button>
+                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Baştan İzle</button>
                                      <button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`;
                 return;
             }
