@@ -23,35 +23,28 @@
         .text-area { margin-top: 20px; min-height: 70px; font-size: 1.1rem; color: #ff80ab; font-style: italic; }
 
         .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.3s; margin: 5px; text-transform: uppercase; }
-        .heart-btn:hover { transform: scale(1.05); background: #ff1f6d; }
 
-        /* Not Dizilimi */
+        /* Not Izgarası */
         #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; padding-bottom: 40px; }
-        
-        /* A4 Siyah Kağıt Formatı */
-        .note-card { 
-            background: #111; border-radius: 12px; border: 1px solid #222; padding: 15px; 
-            text-align: left; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            aspect-ratio: 1 / 1.41; /* A4 Oranı */
-            display: flex; flex-direction: column; justify-content: flex-start;
-        }
-        .note-card small { font-size: 0.6rem; color: #ff80ab; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 10px; }
-        .note-card p { font-size: 0.8rem; line-height: 1.5; color: #ddd; margin: 0; flex-grow: 0; overflow-y: auto; }
-        .note-card img { width: 100%; border-radius: 5px; background: white; margin-top: auto; }
-        .delete-btn { position: absolute; top: 8px; right: 8px; background: rgba(255, 64, 129, 0.1); border: none; color: #ff4081; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; }
+        .note-card { background: #111; border-radius: 12px; border: 1px solid #222; padding: 10px; text-align: left; position: relative; aspect-ratio: 1 / 1.41; display: flex; flex-direction: column; cursor: pointer; }
+        .note-card p { font-size: 0.75rem; color: #ddd; margin: 5px 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+        /* Kaydedilen resimler beyaz kağıt gibi görünsün */
+        .note-card img { width: 100%; border-radius: 5px; background: white; margin-top: auto; padding: 5px; box-sizing: border-box; }
 
-        /* Çizim Kutusu */
-        #canvas-preview { background: #fff; border-radius: 15px; width: 100%; height: 100px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; margin: 15px 0; font-size: 0.9rem; }
+        /* Tam Ekran Not Detay */
+        #not-detay-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        .a4-kagit { background: #111; width: 100%; max-width: 500px; min-height: 707px; border: 1px solid #333; padding: 40px; box-sizing: border-box; position: relative; }
 
-        /* Çizim Modalı */
+        #canvas-preview { background: #fff; border-radius: 15px; width: 100%; height: 100px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; margin: 15px 0; }
+
+        /* Çizim Tuvali (BEYAZ ARKA PLAN) */
         #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; flex-direction: column; }
         #tool-bar { background: #eee; padding: 10px; display: flex; gap: 8px; overflow-x: auto; align-items: center; border-bottom: 1px solid #ccc; }
         .tool-btn { padding: 8px; border-radius: 8px; border: 1px solid #bbb; background: white; cursor: pointer; min-width: 55px; font-size: 0.75rem; color: #333; }
-        .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; }
+        .tool-btn.active { background: #ff4081; color: white; }
         #paint-canvas { flex-grow: 1; touch-action: none; background: white; }
 
         input, textarea { background: #000; border: 1px solid #333; color: white; padding: 15px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
-        @media (max-width: 500px) { #notes-grid { grid-template-columns: 1fr 1fr; } .milat-baslik { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
@@ -76,8 +69,11 @@
 
     <div id="start-screen" class="screen">
         <div class="glass-card">
-            <span class="milat-baslik">Yolculuğumuz...</span>
+            <span class="milat-baslik">Yolculuğumuzun İlk Nefesi...</span>
+            <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">Ruhumun evini bulduğu o mucizevi günden beri tam;</p>
             <div id="timer-main" class="timer-text"></div>
+            <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">geçti.</p>
+            <br>
             <button class="heart-btn" onclick="startStory()">Anılarımıza Yolculuk Yap✨</button>
         </div>
     </div>
@@ -103,16 +99,21 @@
                 <button onclick="goToMenu()" style="background:none; border:none; color:#ff80ab; cursor:pointer;">🏠 Menü</button>
                 <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer;">📸 Slayt</button>
             </div>
-            <h2 class="milat-baslik" style="font-size: 1.8rem;">Geleceğimize Not Bırak</h2>
             <textarea id="noteInput" placeholder="Buraya yaz sevgilim..."></textarea>
-            
-            <div id="canvas-preview" onclick="openDrawingModal()">
-                <span>Tıkla ve Çizmeye Başla ✨</span>
-            </div>
-
-            <button class="heart-btn" onclick="saveNote()">Notu Kaydet ❤️</button>
+            <div id="canvas-preview" onclick="openDrawingModal()"><span>Tıkla ve Çizmeye Başla ✨</span></div>
+            <button class="heart-btn" onclick="saveNote()">Kaydet ❤️</button>
             <div id="notes-grid"></div>
         </div>
+    </div>
+
+    <div id="not-detay-modal">
+        <button onclick="document.getElementById('not-detay-modal').style.display='none'" class="heart-btn" style="margin-bottom: 20px; background: #333;">Kapat</button>
+        <div class="a4-kagit">
+            <small id="detay-tarih" style="color: #ff80ab; border-bottom: 1px solid #333; display: block; padding-bottom: 10px; margin-bottom: 20px;"></small>
+            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.6; color: #fff; white-space: pre-wrap; margin-bottom: 30px;"></p>
+            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 10px; box-sizing: border-box; display: none;">
+        </div>
+        <button id="detay-sil-btn" class="heart-btn" style="margin-top: 20px; background: #442222; font-size: 0.7rem;">Anıyı Sil</button>
     </div>
 
     <div id="drawing-modal">
@@ -121,7 +122,6 @@
             <button class="tool-btn" id="markerBtn" onclick="setTool('marker')">Keçeli</button>
             <button class="tool-btn" id="pastelBtn" onclick="setTool('pastel')">Pastel</button>
             <button class="tool-btn" id="glowBtn" onclick="setTool('glow')">Fosfor</button>
-            <button class="tool-btn" onclick="setTool('eraser')">Silgi</button>
             <input type="color" id="colorPicker" value="#ff4081">
             <input type="range" id="sizePicker" min="1" max="50" value="5">
             <button class="heart-btn" onclick="closeDrawingModal()" style="padding: 8px 15px;">TAMAM</button>
@@ -143,7 +143,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 localStorage.getItem('ask_notlari') ? goToMenu() : document.getElementById('start-screen').style.display = 'flex';
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Hatalı şifre!");
+            } else { alert("Hatalı!"); }
         }
 
         function updateTimer() {
@@ -205,7 +205,7 @@
             currentTool = tool;
             ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
             document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tool + 'Btn')?.classList.add('active');
+            document.getElementById(tool + 'Btn').classList.add('active');
         }
 
         function closeDrawingModal() {
@@ -221,38 +221,44 @@
 
         function saveNote() {
             const text = document.getElementById('noteInput').value;
-            // Çizim yapılıp yapılmadığını kontrol et
             const isCanvasEmpty = ctx.getImageData(0,0,canvas.width,canvas.height).data.every(p => p === 0);
             const image = isCanvasEmpty ? null : canvas.toDataURL();
-            
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
             notes.unshift({ id: Date.now(), text, image, date: new Date().toLocaleString('tr-TR') });
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
-            
-            confetti({ particleCount: 100, spread: 70 });
+            confetti({ particleCount: 100 });
             document.getElementById('noteInput').value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('canvas-preview').innerHTML = "<span>Tıkla ve Çizmeye Başla ✨</span>";
-            displayNotes(); // Başa atmak yerine listeyi tazele
+            document.getElementById('canvas-preview').innerHTML = "<span>Tıkla ve Çiz ✨</span>";
+            displayNotes();
         }
 
         function displayNotes() {
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
             document.getElementById('notes-grid').innerHTML = notes.map(n => `
-                <div class="note-card">
-                    <button class="delete-btn" onclick="deleteNote(${n.id})">×</button>
-                    <small>${n.date}</small>
+                <div class="note-card" onclick='viewNote(${JSON.stringify(n)})'>
+                    <small style="color:#ff80ab">${n.date}</small>
                     <p>${n.text || ''}</p>
                     ${n.image ? `<img src="${n.image}">` : ''}
                 </div>
             `).join('');
         }
 
-        function deleteNote(id) {
-            let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
-            notes = notes.filter(n => n.id !== id);
-            localStorage.setItem('ask_notlari', JSON.stringify(notes));
-            displayNotes();
+        function viewNote(n) {
+            document.getElementById('not-detay-modal').style.display = 'flex';
+            document.getElementById('detay-tarih').innerText = n.date;
+            document.getElementById('detay-metin').innerText = n.text || '';
+            const img = document.getElementById('detay-resim');
+            if(n.image) { img.src = n.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
+            document.getElementById('detay-sil-btn').onclick = () => {
+                if(confirm("Bu anıyı silelim mi?")) {
+                    let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
+                    notes = notes.filter(note => note.id !== n.id);
+                    localStorage.setItem('ask_notlari', JSON.stringify(notes));
+                    document.getElementById('not-detay-modal').style.display = 'none';
+                    displayNotes();
+                }
+            };
         }
 
         function goToMenu() {
