@@ -6,209 +6,229 @@
     <title>Sonsuza Dek Biz | 03.04.2025</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap');
-        body { margin: 0; background: #0f0f0f; color: #fff; font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; touch-action: none; }
-        #login-screen, #start-screen, #clip-container, #note-screen, #menu-screen { text-align: center; padding: 30px; background: rgba(25, 25, 25, 0.98); border-radius: 35px; border: 1px solid #ff4081; box-shadow: 0 0 40px rgba(255, 64, 129, 0.2); width: 90%; max-width: 800px; transition: all 0.8s ease; box-sizing: border-box; position: absolute; }
-        #start-screen, #clip-container, #note-screen, #menu-screen { display: none; }
-        .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff4081; margin-bottom: 10px; display: block; }
-        #timer, #timer-menu { font-size: 1.4rem; color: #ff80ab; font-weight: 600; display: block; margin-top: 10px; letter-spacing: 1px; }
-        .media-box { width: 100%; height: 400px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 2px solid #222; position: relative; }
-        .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: sinematikGecis 1.2s ease-in-out; }
-        @keyframes sinematikGecis { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
-        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; font-weight: 300; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); padding: 0 10px; }
-        .heart-btn { background: #ff4081; color: white; border: none; padding: 15px 35px; border-radius: 50px; cursor: pointer; font-size: 1.1rem; font-weight: 600; box-shadow: 0 5px 25px rgba(255, 64, 129, 0.4); transition: 0.4s; text-transform: uppercase; margin: 5px; }
-        .heart-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 64, 129, 0.6); }
-        input, textarea { background: #1a1a1a; border: 1px solid #ff4081; color: white; padding: 15px; border-radius: 20px; width: 80%; text-align: center; font-size: 1.1rem; outline: none; margin-bottom: 15px; }
-        textarea { height: 100px; resize: none; font-family: 'Poppins', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap');
         
-        /* Çizim Önizleme Kutusu */
-        #canvas-preview { background: #fff; border-radius: 20px; margin: 15px auto; width: 100%; max-width: 500px; height: 150px; border: 3px dashed #ff4081; cursor: zoom-in; display: flex; align-items: center; justify-content: center; color: #ff4081; font-weight: bold; overflow: hidden; }
+        body { margin: 0; background: #0a0a0a; color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        
+        /* Ekran Konteynırları */
+        .screen { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; text-align: center; position: relative; }
+        #login-screen { display: flex; }
+
+        .glass-card { background: rgba(20, 20, 20, 0.95); border-radius: 30px; border: 1px solid #ff4081; box-shadow: 0 0 30px rgba(255, 64, 129, 0.15); padding: 30px; width: 100%; max-width: 800px; }
+
+        .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff4081; margin-bottom: 10px; }
+        .timer-text { font-size: 1.2rem; color: #ff80ab; font-weight: 600; margin: 15px 0; letter-spacing: 1px; }
+
+        /* Slayt ve Medya */
+        .media-box { width: 100%; height: 350px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 1px solid #333; }
+        .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; }
+        .text-area { margin-top: 20px; min-height: 70px; font-size: 1.1rem; color: #ff80ab; font-style: italic; }
+
+        /* Butonlar */
+        .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.3s; margin: 8px; text-transform: uppercase; }
+        .heart-btn:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4); }
+
+        /* Modern Not Dizilimi (Grid) */
+        #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 20px; padding-bottom: 50px; }
+        .note-card { background: #1a1a1a; border-radius: 15px; border: 1px solid #333; padding: 10px; text-align: left; overflow: hidden; transition: 0.3s; }
+        .note-card:hover { border-color: #ff4081; }
+        .note-card small { font-size: 0.65rem; color: #ff80ab; display: block; margin-bottom: 5px; }
+        .note-card p { font-size: 0.85rem; margin: 5px 0; color: #eee; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .note-card img { width: 100%; border-radius: 10px; background: white; margin-top: 5px; }
+
+        /* Profesyonel Çizim Paneli */
+        #canvas-preview { background: #fff; border-radius: 20px; width: 100%; height: 120px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; font-weight: 600; margin: 15px 0; overflow: hidden; }
         #canvas-preview img { max-width: 100%; height: auto; }
 
-        /* TAM EKRAN ÇİZİM MODAL */
-        #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 1000; flex-direction: column; }
-        #tool-bar { background: #f8f8f8; padding: 10px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 2px solid #eee; align-items: center; }
-        .tool-btn { padding: 10px; border-radius: 12px; border: 1px solid #ddd; background: white; cursor: pointer; min-width: 45px; color: #333; font-size: 0.9rem; }
+        #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; flex-direction: column; }
+        #tool-bar { background: #f1f1f1; padding: 10px; display: flex; gap: 10px; overflow-x: auto; border-bottom: 1px solid #ddd; align-items: center; }
+        .tool-group { display: flex; align-items: center; gap: 5px; border-right: 1px solid #ccc; padding-right: 10px; }
+        .tool-btn { padding: 8px; border-radius: 10px; border: 1px solid #ccc; background: white; cursor: pointer; min-width: 45px; font-size: 0.9rem; }
         .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; }
-        #paint-canvas { flex-grow: 1; cursor: crosshair; touch-action: none; background: white; }
+        #paint-canvas { flex-grow: 1; touch-action: none; background: white; cursor: crosshair; }
 
-        #notes-list { max-height: 200px; overflow-y: auto; margin-top: 20px; text-align: left; padding: 10px; border-top: 1px solid #333; }
-        .note-item { background: rgba(255, 64, 129, 0.1); padding: 10px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #ff4081; font-size: 0.9rem; }
-        .note-img { max-width: 100%; border-radius: 5px; margin-top: 5px; background: white; display: block; }
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
-        @media (max-width: 600px) { .media-box { height: 300px; } .milat-baslik { font-size: 2.2rem; } .menu-grid { grid-template-columns: 1fr; } }
+        input[type="password"], textarea { background: #151515; border: 1px solid #333; color: white; padding: 15px; border-radius: 20px; width: 90%; outline: none; font-size: 1rem; border: 1px solid #ff4081; }
+
+        @media (max-width: 500px) { #notes-grid { grid-template-columns: 1fr 1fr; } .milat-baslik { font-size: 2rem; } }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <h2 style="font-family: 'Dancing Script', cursive; font-size: 3rem; margin-bottom: 20px;">Kalbimin Anahtarı? ❤️</h2>
-        <input type="password" id="passInput" placeholder="Sadece Bize Özel Şifre...">
-        <br>
-        <button class="heart-btn" onclick="checkPassword()">Aşkımızın Kapısını Arala</button>
+    <div id="login-screen" class="screen">
+        <div class="glass-card">
+            <h2 class="milat-baslik">Kalbimin Anahtarı? ❤️</h2>
+            <input type="password" id="passInput" placeholder="Şifre...">
+            <br><br>
+            <button class="heart-btn" onclick="checkPassword()">Giriş Yap</button>
+        </div>
     </div>
 
-    <div id="menu-screen">
-        <h2 class="milat-baslik">Hoş Geldin Ömrüm</h2>
-        <div id="timer-menu"></div>
-        <div class="menu-grid">
+    <div id="menu-screen" class="screen">
+        <div class="glass-card">
+            <h2 class="milat-baslik">Ömrüm...</h2>
+            <div id="timer-menu" class="timer-text"></div>
             <button class="heart-btn" onclick="startStory()">Anılarımızı İzle 📸</button>
-            <button class="heart-btn" onclick="openNoteScreen()">Aşk Notlarımız 📝</button>
+            <button class="heart-btn" onclick="openNoteScreen()">Notlarımıza Bak 📝</button>
         </div>
     </div>
 
-    <div id="start-screen">
-        <span class="milat-baslik">Yolculuğumuzun İlk Nefesi...</span>
-        <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">Ruhumun evini bulduğu o mucizevi günden beri tam;</p>
-        <span id="timer"></span>
-        <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">geçti.</p>
-        <br>
-        <button class="heart-btn" onclick="startStory()">Anılarımıza Yolculuk Yap✨</button>
+    <div id="start-screen" class="screen">
+        <div class="glass-card">
+            <span class="milat-baslik">Yolculuğumuz...</span>
+            <div id="timer-main" class="timer-text"></div>
+            <button class="heart-btn" onclick="startStory()">Anılara Yolculuk ✨</button>
+        </div>
     </div>
 
-    <div id="clip-container">
-        <div class="media-box">
-            <img src="resim1.jpeg" class="myMedia"><img src="resim2.jpeg" class="myMedia"><img src="resim3.jpeg" class="myMedia">
-            <img src="resim4.jpeg" class="myMedia"><img src="resim5.jpeg" class="myMedia"><img src="resim6.jpeg" class="myMedia">
-            <img src="resim7.jpeg" class="myMedia"><img src="resim8.jpeg" class="myMedia"><img src="resim9.jpeg" class="myMedia">
-            <img src="resim10.jpeg" class="myMedia"><img src="resim11.jpeg" class="myMedia"><img src="resim12.jpeg" class="myMedia">
-            <img src="resim13.jpeg" class="myMedia"><video class="myMedia" id="myVid" playsinline muted><source src="video.mp4" type="video/mp4"></video>
-            <img src="resim14.jpeg" class="myMedia">
+    <div id="clip-container" class="screen">
+        <div class="glass-card">
+            <div class="media-box">
+                <img src="resim1.jpeg" class="myMedia"><img src="resim2.jpeg" class="myMedia"><img src="resim3.jpeg" class="myMedia">
+                <img src="resim4.jpeg" class="myMedia"><img src="resim5.jpeg" class="myMedia"><img src="resim6.jpeg" class="myMedia">
+                <img src="resim7.jpeg" class="myMedia"><img src="resim8.jpeg" class="myMedia"><img src="resim9.jpeg" class="myMedia">
+                <img src="resim10.jpeg" class="myMedia"><img src="resim11.jpeg" class="myMedia"><img src="resim12.jpeg" class="myMedia">
+                <img src="resim13.jpeg" class="myMedia"><video class="myMedia" id="myVid" playsinline muted><source src="video.mp4" type="video/mp4"></video>
+                <img src="resim14.jpeg" class="myMedia">
+            </div>
+            <div id="message-text" class="text-area"></div>
+            <audio id="mainMusic" src="muzik.mp3" loop></audio>
         </div>
-        <div id="message-text" class="text-area"></div>
-        <audio id="mainMusic" src="muzik.mp3" loop></audio>
     </div>
 
-    <div id="note-screen">
-        <h2 class="milat-baslik">Geleceğimize Not Bırak</h2>
-        <textarea id="noteInput" placeholder="Buraya kalbinden geçenleri yaz sevgilim..."></textarea>
-        <div id="canvas-preview" onclick="openDrawingModal()">
-            <span>Tuvali Büyüt ve Çizmeye Başla ✨</span>
+    <div id="note-screen" class="screen" style="justify-content: flex-start; overflow-y: auto;">
+        <div class="glass-card" style="margin-top: 20px;">
+            <h2 class="milat-baslik" style="font-size: 1.8rem;">Aşk Notları</h2>
+            <textarea id="noteInput" placeholder="Duygularını buraya dök sevgilim..."></textarea>
+            
+            <div id="canvas-preview" onclick="openDrawingModal()">
+                <span>Tıkla ve Tuvali Aç ✨</span>
+            </div>
+
+            <button class="heart-btn" onclick="saveNote()">Notu Sakla ❤️</button>
+            <button class="heart-btn" onclick="goToMenu()" style="background:#333">Menüye Dön</button>
+            
+            <div id="notes-grid"></div>
         </div>
-        <button class="heart-btn" onclick="saveNote()">Notu Kaydet ❤️</button>
-        <button class="heart-btn" onclick="backToMenu()" style="background: #333;">Geri Dön</button>
-        <div id="notes-list"></div>
     </div>
 
     <div id="drawing-modal">
         <div id="tool-bar">
-            <button class="tool-btn active" onclick="setTool('pen', this)">✏️ İnce</button>
-            <button class="tool-btn" onclick="setTool('marker', this)">🖍️ Kalın</button>
-            <button class="tool-btn" onclick="setTool('eraser', this)">🧹 Silgi</button>
-            <input type="color" id="colorPicker" onchange="updateColor(this.value)" style="width:40px; height:40px; border:none; cursor:pointer;">
-            <select id="emojiPicker" onchange="addEmoji(this.value)" class="tool-btn">
-                <option value="">😊 Emoji</option>
-                <option value="❤️">❤️</option><option value="🌸">🌸</option><option value="✨">✨</option><option value="💍">💍</option><option value="🧸">🧸</option>
-            </select>
-            <button class="tool-btn" onclick="clearCanvas()" style="background:#ffebee;">🗑️</button>
-            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left:auto; padding: 10px 20px; font-size:0.9rem;">TAMAM</button>
+            <div class="tool-group">
+                <button class="tool-btn active" id="penBtn" onclick="setTool('pen')">✏️</button>
+                <button class="tool-btn" id="markerBtn" onclick="setTool('marker')">🖍️</button>
+                <button class="tool-btn" onclick="setTool('eraser')">🧹</button>
+            </div>
+            <div class="tool-group">
+                <input type="color" id="colorPicker" value="#ff4081" onchange="updateColor(this.value)">
+                <input type="range" id="sizePicker" min="2" max="30" value="5" title="Fırça Boyutu">
+            </div>
+            <div class="tool-group">
+                <select id="emojiPicker" onchange="setEmojiTool(this.value)" class="tool-btn">
+                    <option value="">😊</option>
+                    <option value="❤️">❤️</option><option value="🌸">🌸</option><option value="✨">✨</option><option value="💍">💍</option><option value="🤍">🤍</option>
+                </select>
+            </div>
+            <button class="tool-btn" onclick="clearCanvas()" style="background:#ffcdd2;">🗑️</button>
+            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left:auto; padding: 8px 15px;">KAYDET</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
 
     <script>
-        const TANIŞMA_TARİHİ = "2025-04-03"; 
-        const mesajlar = [
-            "Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...",
-            "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.",
-            "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.",
-            "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.",
-            "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.",
-            "Zamanın durmasını istediğim binlerce andan sadece biri...",
-            "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.",
-            "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans!",
-            "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.",
-            "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.",
-            "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.",
-            "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.",
-            "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.",
-            "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.",
-            "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)"
-        ];
+        const TANIŞMA_TARİHİ = "2025-04-03";
+        const mesajlar = ["Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...", "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.", "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.", "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.", "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.", "Zamanın durmasını istediğim binlerce andan sadece biri...", "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.", "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans!", "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.", "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.", "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.", "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.", "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.", "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.", "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)"];
 
         let currentIndex = 0;
         const mainMusic = document.getElementById('mainMusic');
         const canvas = document.getElementById('paint-canvas');
         const ctx = canvas.getContext('2d');
-        let drawing = false, currentTool = 'pen', currentColor = '#000';
+        let drawing = false, currentTool = 'pen', currentColor = '#ff4081', activeEmoji = null;
 
         function checkPassword() {
             if(document.getElementById('passInput').value === "2240") {
                 document.getElementById('login-screen').style.display = 'none';
-                localStorage.getItem('ask_notlari') ? document.getElementById('menu-screen').style.display = 'block' : document.getElementById('start-screen').style.display = 'block';
+                if(localStorage.getItem('ask_notlari')) {
+                    document.getElementById('menu-screen').style.display = 'flex';
+                } else {
+                    document.getElementById('start-screen').style.display = 'flex';
+                }
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else { alert("Hatalı şifre hayatım!"); }
+            } else alert("Yanlış şifre sevgilim!");
         }
 
         function updateTimer() {
             const diff = new Date() - new Date(TANIŞMA_TARİHİ);
-            const days = Math.floor(diff / 86400000);
-            const hours = Math.floor((diff % 86400000) / 3600000);
-            const mins = Math.floor((diff % 3600000) / 60000);
-            const secs = Math.floor((diff % 60000) / 1000);
-            const text = `${days} Gün, ${hours} Saat, ${mins} Dakika, ${secs} Saniye`;
-            if(document.getElementById('timer')) document.getElementById('timer').innerText = text;
-            if(document.getElementById('timer-menu')) document.getElementById('timer-menu').innerText = text;
+            const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+            const text = `${d} Gün, ${h}:${m}:${s}`;
+            ['timer-main', 'timer-menu'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = text; });
         }
 
         function startStory() {
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('menu-screen').style.display = 'none';
-            document.getElementById('clip-container').style.display = 'block';
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.getElementById('clip-container').style.display = 'flex';
             currentIndex = 0; mainMusic.play(); showNext();
         }
 
         function showNext() {
             let media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text");
             if (currentIndex >= media.length) {
-                textDiv.innerHTML = `Sonsuza dek seninle... ❤️ <br><br> 
-                    <button class='heart-btn' onclick='startStory()' style='font-size: 0.8rem;'>Yeniden İzle</button>
-                    <button class='heart-btn' onclick='openNoteScreen()' style='font-size: 0.8rem; background: #ad1457;'>Not Bırak</button>`;
-                return;
+                textDiv.innerHTML = `<button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`; return;
             }
-            for (let i = 0; i < media.length; i++) { media[i].style.display = "none"; if(media[i].tagName === "VIDEO") media[i].pause(); }
+            for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); }
             media[currentIndex].style.display = "block"; textDiv.innerHTML = mesajlar[currentIndex];
             if (media[currentIndex].tagName === "VIDEO") {
-                media[currentIndex].currentTime = 0; media[currentIndex].play();
-                media[currentIndex].onended = () => { currentIndex++; showNext(); };
-            } else { currentIndex++; setTimeout(showNext, 6000); }
+                media[currentIndex].play(); media[currentIndex].onended = () => { currentIndex++; showNext(); };
+            } else { currentIndex++; setTimeout(showNext, 5000); }
         }
 
-        // Çizim Fonksiyonları
+        // Çizim Mantığı
         function openDrawingModal() {
             document.getElementById('drawing-modal').style.display = 'flex';
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - document.getElementById('tool-bar').offsetHeight;
-            ctx.lineCap = 'round'; ctx.strokeStyle = currentColor;
-            initDrawing();
+            canvas.height = window.innerHeight - 60;
+            ctx.lineCap = 'round';
+            initDrawingListeners();
         }
 
+        function setTool(tool) {
+            currentTool = tool; activeEmoji = null;
+            ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            if(tool === 'pen') document.getElementById('penBtn').classList.add('active');
+            if(tool === 'marker') document.getElementById('markerBtn').classList.add('active');
+        }
+
+        function setEmojiTool(val) { if(!val) return; activeEmoji = val; currentTool = 'emoji'; }
+        function updateColor(val) { currentColor = val; }
         function closeDrawingModal() {
-            const preview = document.getElementById('canvas-preview');
-            preview.innerHTML = `<img src="${canvas.toDataURL()}">`;
+            document.getElementById('canvas-preview').innerHTML = `<img src="${canvas.toDataURL()}">`;
             document.getElementById('drawing-modal').style.display = 'none';
         }
-
-        function setTool(tool, btn) {
-            currentTool = tool;
-            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
-            ctx.lineWidth = (tool === 'marker') ? 15 : 4;
-        }
-
-        function updateColor(val) { currentColor = val; ctx.strokeStyle = val; }
-        function addEmoji(val) { if(!val) return; ctx.font = "60px serif"; ctx.fillText(val, canvas.width/2, canvas.height/2); }
         function clearCanvas() { ctx.clearRect(0,0,canvas.width, canvas.height); }
 
-        function initDrawing() {
-            const getPos = (e) => {
-                const rect = canvas.getBoundingClientRect();
-                return { x: (e.clientX || e.touches[0].clientX) - rect.left, y: (e.clientY || e.touches[0].clientY) - rect.top };
+        function initDrawingListeners() {
+            const getXY = (e) => {
+                const r = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - r.left;
+                const y = (e.clientY || e.touches[0].clientY) - r.top;
+                return {x, y};
             };
-            const start = (e) => { drawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
-            const move = (e) => { if(!drawing) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); };
-            const stop = () => drawing = false;
+            const start = (e) => { 
+                const pos = getXY(e);
+                if(currentTool === 'emoji' && activeEmoji) {
+                    ctx.font = "50px serif"; ctx.fillText(activeEmoji, pos.x - 25, pos.y + 20);
+                    return;
+                }
+                drawing = true; ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+            };
+            const move = (e) => { 
+                if(!drawing) return; 
+                const pos = getXY(e);
+                ctx.strokeStyle = currentColor;
+                ctx.lineWidth = document.getElementById('sizePicker').value;
+                ctx.lineTo(pos.x, pos.y); ctx.stroke(); 
+            };
+            const stop = () => { drawing = false; ctx.beginPath(); };
             canvas.onmousedown = start; canvas.onmousemove = move; window.onmouseup = stop;
             canvas.ontouchstart = (e) => { e.preventDefault(); start(e); };
             canvas.ontouchmove = (e) => { e.preventDefault(); move(e); };
@@ -216,31 +236,35 @@
         }
 
         function openNoteScreen() {
-            document.getElementById('clip-container').style.display = 'none';
-            document.getElementById('menu-screen').style.display = 'none';
-            document.getElementById('note-screen').style.display = 'block';
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.getElementById('note-screen').style.display = 'flex';
             displayNotes();
         }
 
         function saveNote() {
             const text = document.getElementById('noteInput').value;
-            const img = canvas.toDataURL();
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
-            notes.unshift({ text, image: img, date: new Date().toLocaleString('tr-TR') });
+            notes.unshift({ text, image: canvas.toDataURL(), date: new Date().toLocaleString('tr-TR') });
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
-            alert("Ölümsüzleştirildi! ❤️"); location.reload();
+            confetti({ particleCount: 150, spread: 100 });
+            document.getElementById('noteInput').value = ""; clearCanvas();
+            goToMenu();
         }
 
         function displayNotes() {
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
-            document.getElementById('notes-list').innerHTML = notes.map(n => `
-                <div class="note-item"><small>${n.date}</small><div>${n.text}</div><img src="${n.image}" class="note-img"></div>
+            document.getElementById('notes-grid').innerHTML = notes.map(n => `
+                <div class="note-card">
+                    <small>${n.date}</small>
+                    <p>${n.text || ''}</p>
+                    <img src="${n.image}">
+                </div>
             `).join('');
         }
 
-        function backToMenu() {
-            if(localStorage.getItem('ask_notlari')) location.reload();
-            else openNoteScreen();
+        function goToMenu() {
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.getElementById('menu-screen').style.display = 'flex';
         }
     </script>
 </body>
