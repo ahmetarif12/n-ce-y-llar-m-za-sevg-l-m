@@ -25,25 +25,27 @@
         .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.3s; margin: 8px; text-transform: uppercase; }
         .heart-btn:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4); }
 
+        /* Notlar Izgarası */
         #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 20px; padding-bottom: 50px; }
-        .note-card { background: #1a1a1a; border-radius: 15px; border: 1px solid #333; padding: 10px; text-align: left; transition: 0.3s; }
+        .note-card { background: #1a1a1a; border-radius: 15px; border: 1px solid #333; padding: 10px; text-align: left; position: relative; transition: 0.3s; }
         .note-card small { font-size: 0.65rem; color: #ff80ab; display: block; margin-bottom: 5px; }
-        .note-card p { font-size: 0.85rem; margin: 5px 0; color: #eee; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .note-card p { font-size: 0.85rem; margin: 5px 0; color: #eee; }
         .note-card img { width: 100%; border-radius: 10px; background: white; margin-top: 5px; }
+        .delete-btn { position: absolute; top: 5px; right: 5px; background: rgba(255, 0, 0, 0.2); border: none; color: #ff5252; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 0.8rem; }
 
+        /* Çizim Kutusu */
         #canvas-preview { background: #fff; border-radius: 20px; width: 100%; height: 120px; border: 2px dashed #ff4081; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff4081; font-weight: 600; margin: 15px 0; overflow: hidden; }
-        #canvas-preview img { max-width: 100%; height: auto; }
 
+        /* Gelişmiş Çizim Paneli */
         #drawing-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; flex-direction: column; }
-        #tool-bar { background: #f1f1f1; padding: 10px; display: flex; gap: 15px; overflow-x: auto; border-bottom: 1px solid #ddd; align-items: center; }
-        .tool-group { display: flex; align-items: center; gap: 8px; border-right: 2px solid #ddd; padding-right: 15px; }
-        .tool-btn { padding: 10px; border-radius: 12px; border: 1px solid #ccc; background: white; cursor: pointer; min-width: 50px; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+        #tool-bar { background: #f5f5f5; padding: 10px; display: flex; gap: 10px; overflow-x: auto; border-bottom: 1px solid #ddd; align-items: center; white-space: nowrap; }
+        .tool-btn { padding: 8px 12px; border-radius: 12px; border: 1px solid #ccc; background: white; cursor: pointer; min-width: 60px; font-size: 0.8rem; color: #333; }
         .tool-btn.active { background: #ff4081; color: white; border-color: #ff4081; }
         #paint-canvas { flex-grow: 1; touch-action: none; background: white; cursor: crosshair; }
 
-        input[type="password"], textarea { background: #151515; border: 1px solid #ff4081; color: white; padding: 15px; border-radius: 20px; width: 90%; outline: none; font-size: 1rem; box-sizing: border-box; }
+        input[type="password"], textarea { background: #151515; border: 1px solid #ff4081; color: white; padding: 15px; border-radius: 20px; width: 90%; outline: none; box-sizing: border-box; }
 
-        @media (max-width: 500px) { #notes-grid { grid-template-columns: 1fr 1fr; } .milat-baslik { font-size: 2rem; } #tool-bar { gap: 8px; } }
+        @media (max-width: 500px) { #notes-grid { grid-template-columns: 1fr 1fr; } .milat-baslik { font-size: 2rem; } }
     </style>
 </head>
 <body>
@@ -53,7 +55,7 @@
             <h2 class="milat-baslik">Kalbimin Anahtarı? ❤️</h2>
             <input type="password" id="passInput" placeholder="Sadece Bize Özel Şifre...">
             <br><br>
-            <button class="heart-btn" onclick="checkPassword()">Aşkın Kapısını Aç</button>
+            <button class="heart-btn" onclick="checkPassword()">Aşkımızın Kapısını Arala</button>
         </div>
     </div>
 
@@ -68,9 +70,12 @@
 
     <div id="start-screen" class="screen">
         <div class="glass-card">
-            <span class="milat-baslik">Yolculuğumuz...</span>
+            <span class="milat-baslik">Yolculuğumuzun İlk Nefesi...</span>
+            <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">Ruhumun evini bulduğu o mucizevi günden beri tam;</p>
             <div id="timer-main" class="timer-text"></div>
-            <button class="heart-btn" onclick="startStory()">Anılara Yolculuk ✨</button>
+            <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">geçti.</p>
+            <br>
+            <button class="heart-btn" onclick="startStory()">Anılarımıza Yolculuk Yap✨</button>
         </div>
     </div>
 
@@ -91,8 +96,8 @@
 
     <div id="note-screen" class="screen" style="justify-content: flex-start; overflow-y: auto;">
         <div class="glass-card" style="margin-top: 20px; margin-bottom: 20px;">
-            <h2 class="milat-baslik" style="font-size: 1.8rem;">Geleceğe Not Bırak</h2>
-            <textarea id="noteInput" placeholder="Buraya kalbinden geçenleri yaz..."></textarea>
+            <h2 class="milat-baslik" style="font-size: 1.8rem;">Geleceğimize Not Bırak</h2>
+            <textarea id="noteInput" placeholder="Buraya kalbinden geçenleri yaz sevgilim..."></textarea>
             
             <div id="canvas-preview" onclick="openDrawingModal()">
                 <span>Tıkla ve Tuvali Büyüt ✨</span>
@@ -107,17 +112,16 @@
 
     <div id="drawing-modal">
         <div id="tool-bar">
-            <div class="tool-group">
-                <button class="tool-btn active" id="penBtn" onclick="setTool('pen')">✏️</button>
-                <button class="tool-btn" id="markerBtn" onclick="setTool('marker')">🖌️</button>
-                <button class="tool-btn" onclick="setTool('eraser')">🧹</button>
-            </div>
-            <div class="tool-group">
-                <input type="color" id="colorPicker" value="#ff4081" onchange="updateColor(this.value)" style="width:45px; height:40px; border:none; padding:0;">
-                <input type="range" id="sizePicker" min="1" max="50" value="5" title="Fırça Boyutu">
-            </div>
-            <button class="tool-btn" onclick="clearCanvas()" style="background:#ffcdd2; margin-left:10px;">🗑️</button>
-            <button class="heart-btn" onclick="closeDrawingModal()" style="margin-left:auto; padding: 10px 20px;">TAMAM</button>
+            <button class="tool-btn active" id="penBtn" onclick="setTool('pen')">✏️ Kalem</button>
+            <button class="tool-btn" id="markerBtn" onclick="setTool('marker')">🖌️ Keçeli</button>
+            <button class="tool-btn" id="pastelBtn" onclick="setTool('pastel')">🖍️ Pastel</button>
+            <button class="tool-btn" id="glowBtn" onclick="setTool('glow')">✨ Fosfor</button>
+            <button class="tool-btn" id="waterBtn" onclick="setTool('water')">💧 Sulu</button>
+            <button class="tool-btn" onclick="setTool('eraser')">🧹 Silgi</button>
+            <input type="color" id="colorPicker" value="#ff4081" style="min-width:50px; height:40px;">
+            <input type="range" id="sizePicker" min="1" max="60" value="5">
+            <button class="tool-btn" onclick="clearCanvas()" style="background:#ffcdd2;">🗑️ Temizle</button>
+            <button class="heart-btn" onclick="closeDrawingModal()" style="padding: 10px 20px;">TAMAM</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
@@ -142,11 +146,10 @@
             "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)"
         ];
 
-        let currentIndex = 0;
+        let currentIndex = 0, drawing = false, currentTool = 'pen';
         const mainMusic = document.getElementById('mainMusic');
         const canvas = document.getElementById('paint-canvas');
         const ctx = canvas.getContext('2d');
-        let drawing = false, currentTool = 'pen', currentColor = '#ff4081';
 
         function checkPassword() {
             if(document.getElementById('passInput').value === "2240") {
@@ -155,13 +158,13 @@
                     document.getElementById('menu-screen').style.display = 'flex' : 
                     document.getElementById('start-screen').style.display = 'flex';
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Hatalı şifre!");
+            } else alert("Hatalı şifre hayatım!");
         }
 
         function updateTimer() {
             const diff = new Date() - new Date(TANIŞMA_TARİHİ);
             const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
-            const txt = `${d} Gün, ${h}:${m}:${s}`;
+            const txt = `${d} Gün, ${h} Saat, ${m} Dakika, ${s} Saniye`;
             if(document.getElementById('timer-main')) document.getElementById('timer-main').innerText = txt;
             if(document.getElementById('timer-menu')) document.getElementById('timer-menu').innerText = txt;
         }
@@ -175,7 +178,10 @@
         function showNext() {
             let media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text");
             if (currentIndex >= media.length) {
-                textDiv.innerHTML = `<button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`; return;
+                textDiv.innerHTML = `Sonsuza dek seninle... ❤️ <br><br> 
+                    <button class='heart-btn' onclick='startStory()' style='font-size: 0.8rem;'>Baştan İzle</button>
+                    <button class='heart-btn' onclick='openNoteScreen()' style='font-size: 0.8rem; background: #ad1457;'>Not Bırak</button>`;
+                return;
             }
             for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); }
             media[currentIndex].style.display = "block"; textDiv.innerHTML = mesajlar[currentIndex];
@@ -188,24 +194,18 @@
             document.getElementById('drawing-modal').style.display = 'flex';
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight - 70;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
             initDrawing();
         }
 
         function setTool(tool) {
             currentTool = tool;
-            ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
             document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            if(tool === 'pen') document.getElementById('penBtn').classList.add('active');
-            if(tool === 'marker') document.getElementById('markerBtn').classList.add('active');
-        }
-
-        function updateColor(val) { currentColor = val; }
-        function clearCanvas() { ctx.clearRect(0,0,canvas.width, canvas.height); }
-        function closeDrawingModal() {
-            document.getElementById('canvas-preview').innerHTML = `<img src="${canvas.toDataURL()}">`;
-            document.getElementById('drawing-modal').style.display = 'none';
+            document.getElementById(tool + 'Btn')?.classList.add('active');
+            
+            // Sıfırlama
+            ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
+            ctx.shadowBlur = 0; ctx.globalAlpha = 1.0;
         }
 
         function initDrawing() {
@@ -215,9 +215,19 @@
             };
             const start = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
             const move = (e) => { 
-                if(!drawing) return; const p = getPos(e); 
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = document.getElementById('sizePicker').value;
+                if(!drawing) return; 
+                const p = getPos(e); 
+                const color = document.getElementById('colorPicker').value;
+                const size = document.getElementById('sizePicker').value;
+
+                ctx.lineWidth = size;
+                ctx.strokeStyle = color;
+
+                if(currentTool === 'pastel') { ctx.globalAlpha = 0.4; ctx.lineWidth = size * 2; }
+                else if(currentTool === 'glow') { ctx.shadowBlur = size; ctx.shadowColor = color; }
+                else if(currentTool === 'water') { ctx.globalAlpha = 0.2; ctx.lineWidth = size * 3; }
+                else { ctx.globalAlpha = 1.0; ctx.shadowBlur = 0; }
+
                 ctx.lineTo(p.x, p.y); ctx.stroke(); 
             };
             const stop = () => { drawing = false; ctx.beginPath(); };
@@ -226,6 +236,13 @@
             canvas.ontouchmove = (e) => { e.preventDefault(); move(e); };
             canvas.ontouchend = stop;
         }
+
+        function closeDrawingModal() {
+            document.getElementById('canvas-preview').innerHTML = `<img src="${canvas.toDataURL()}" style="max-height:100%">`;
+            document.getElementById('drawing-modal').style.display = 'none';
+        }
+
+        function clearCanvas() { ctx.clearRect(0,0,canvas.width, canvas.height); }
 
         function openNoteScreen() {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -236,17 +253,31 @@
         function saveNote() {
             const text = document.getElementById('noteInput').value;
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
-            notes.unshift({ text, image: canvas.toDataURL(), date: new Date().toLocaleString('tr-TR') });
+            notes.unshift({ id: Date.now(), text, image: canvas.toDataURL(), date: new Date().toLocaleString('tr-TR') });
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
             confetti({ particleCount: 150, spread: 100 });
             document.getElementById('noteInput').value = ""; clearCanvas();
             goToMenu();
         }
 
+        function deleteNote(id) {
+            if(confirm("Bu anıyı silmek istediğine emin misin sevgilim?")) {
+                let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
+                notes = notes.filter(n => n.id !== id);
+                localStorage.setItem('ask_notlari', JSON.stringify(notes));
+                displayNotes();
+            }
+        }
+
         function displayNotes() {
             const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
             document.getElementById('notes-grid').innerHTML = notes.map(n => `
-                <div class="note-card"><small>${n.date}</small><p>${n.text || ''}</p><img src="${n.image}"></div>
+                <div class="note-card">
+                    <button class="delete-btn" onclick="deleteNote(${n.id})">🗑️</button>
+                    <small>${n.date}</small>
+                    <p>${n.text || ''}</p>
+                    <img src="${n.image}">
+                </div>
             `).join('');
         }
 
