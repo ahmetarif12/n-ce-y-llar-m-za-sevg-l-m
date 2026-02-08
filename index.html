@@ -79,7 +79,7 @@
             <h2 class="milat-baslik">Hoş Geldin Ömrüm</h2>
             <div id="timer-menu" class="timer-text"></div>
             <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                <button class="heart-btn" onclick="startStory()">Anıları İzle 📸</button>
+                <button class="heart-btn" onclick="startStory()">Anılarımızı İzle 📸</button>
                 <button class="heart-btn" onclick="openNoteScreen()">Aşk Notları 📝</button>
             </div>
         </div>
@@ -117,7 +117,7 @@
 
     <div id="write-modal" class="full-modal">
         <h2 class="milat-baslik" style="font-size: 2rem;">İçinden Geçenler...</h2>
-        <textarea id="noteInput" placeholder="Buraya yaz..."></textarea>
+        <textarea id="noteInput" placeholder="Buraya içinden geçenleri yaz sevgilim..."></textarea>
         <div>
             <button class="heart-btn" onclick="saveNote()">Kaydet ❤️</button>
             <button class="heart-btn" onclick="closeModals()" style="background:#333;">Vazgeç</button>
@@ -159,12 +159,12 @@
 
     <script>
         const TANIŞMA_TARİHİ = '2025-04-03';
-        const mesajlar = ["Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...", "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.", "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.", "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.", "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.", "Zamanın durmasını istediğim binlerce andan sadece biri...", "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.", "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans!", "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.", "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.", "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.", "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.", "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.", "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.", "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)"];
+        const mesajlar = ["Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...", "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.", "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.", "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.", "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.", "Zamanın durmasını istediğim binlerce andan sadece biri...", "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.", "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans!", "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.", "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.", "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.", "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.", "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.", "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.", "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)", "Seni çok seviyorum sevgilimmmmm❤️"];
 
         let currentIndex = 0, drawing = false, currentTool = 'pen', editId = null, lastX = 0, lastY = 0, historyStack = [];
         const canvas = document.getElementById('paint-canvas'), ctx = canvas.getContext('2d'), mainMusic = document.getElementById('mainMusic');
 
-        function checkPassword() { if(document.getElementById('passInput').value === '2240') { document.getElementById('login-screen').style.display = 'none'; document.getElementById('start-screen').style.display = 'flex'; updateTimer(); setInterval(updateTimer, 1000); } else alert('Hatalı!'); }
+        function checkPassword() { if(document.getElementById('passInput').value === '2240') { document.getElementById('login-screen').style.display = 'none'; document.getElementById('start-screen').style.display = 'flex'; updateTimer(); setInterval(updateTimer, 1000); } else alert('Hatalı Şifre sevgilim'); }
         function updateTimer() { const diff = new Date() - new Date(TANIŞMA_TARİHİ); const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000); const txt = `${d} G, ${h} S, ${m} D, ${s} S`; document.getElementById('timer-main').innerText = txt; if(document.getElementById('timer-menu')) document.getElementById('timer-menu').innerText = txt; }
         function openWriteModal() { document.getElementById('write-modal').style.display = 'flex'; }
         function openDrawingModal() { document.getElementById('drawing-modal').style.display = 'flex'; canvas.width = window.innerWidth; canvas.height = window.innerHeight - 150; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; saveToHistory(); }
@@ -188,3 +188,4 @@
     </script>
 </body>
 </html>
+
