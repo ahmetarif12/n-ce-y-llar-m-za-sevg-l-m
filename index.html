@@ -11,41 +11,39 @@
         body { margin: 0; background: #0a0a0a; color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         .screen { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; text-align: center; position: absolute; }
         #login-screen { display: flex; }
-        .glass-card { background: rgba(20, 20, 20, 0.95); border-radius: 30px; border: 1px solid #ff4081; box-shadow: 0 0 30px rgba(255, 64, 129, 0.2); padding: 25px; width: 100%; max-width: 800px; }
-        .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #ff4081; margin-bottom: 10px; }
-        .timer-text { font-size: 1.2rem; color: #ff80ab; font-weight: 600; margin: 15px 0; letter-spacing: 1px; }
+        .glass-card { background: rgba(20, 20, 20, 0.95); border-radius: 30px; border: 1px solid #ff4081; box-shadow: 0 0 30px rgba(255, 64, 129, 0.2); padding: 25px; width: 95%; max-width: 1000px; }
+        .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 3rem; color: #ff4081; margin-bottom: 10px; }
+        .timer-text { font-size: 1.4rem; color: #ff80ab; font-weight: 600; margin: 15px 0; letter-spacing: 1px; }
         
-        /* SİNEMATİK GEÇİŞLER */
-        .media-box { width: 100%; height: 380px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 1px solid #333; position: relative; }
+        /* BİLGİSAYARDA BÜYÜK SLAYT ALANI */
+        .media-box { width: 100%; height: 70vh; max-height: 600px; background: #000; border-radius: 20px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 1px solid #333; position: relative; }
         .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: sinematikGecis 1.5s ease-in-out; }
         @keyframes sinematikGecis { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
         
-        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.2rem; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); }
-        .heart-btn { background: #ff4081; color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.3s; margin: 5px; text-transform: uppercase; }
+        .text-area { margin-top: 25px; min-height: 80px; font-size: 1.4rem; color: #ff80ab; font-style: italic; text-shadow: 0 0 15px rgba(255,128,171,0.3); }
+        .heart-btn { background: #ff4081; color: white; border: none; padding: 15px 35px; border-radius: 50px; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: 0.3s; margin: 10px; text-transform: uppercase; }
 
-        /* NOTLAR IZGARASI */
-        #notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; margin-top: 25px; padding-bottom: 40px; }
-        .note-card { background: #111; border-radius: 15px; border: 1px solid #222; padding: 12px; text-align: left; position: relative; aspect-ratio: 1 / 1.41; display: flex; flex-direction: column; cursor: pointer; overflow: hidden; }
-        .note-card p { font-size: 0.75rem; color: #bbb; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; margin: 5px 0; }
-        .note-card img { width: 100%; border-radius: 8px; background: white; margin-top: auto; padding: 4px; box-sizing: border-box; }
+        #notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; width: 100%; margin-top: 25px; padding-bottom: 40px; }
+        .note-card { background: #111; border-radius: 15px; border: 1px solid #222; padding: 15px; text-align: left; aspect-ratio: 1 / 1.41; display: flex; flex-direction: column; cursor: pointer; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .note-card p { font-size: 0.9rem; color: #bbb; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; margin: 10px 0; }
+        .note-card img { width: 100%; border-radius: 8px; background: white; margin-top: auto; padding: 5px; box-sizing: border-box; }
 
-        /* MODALLAR */
         .full-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; padding: 20px; box-sizing: border-box; }
-        .a4-kagit { background: #080808; width: 100%; max-width: 550px; min-height: 750px; border: 1px solid #1a1a1a; padding: 40px; box-sizing: border-box; position: relative; text-align: left; margin: 0 auto; }
+        .a4-kagit { background: #080808; width: 100%; max-width: 600px; min-height: 800px; border: 1px solid #1a1a1a; padding: 40px; box-sizing: border-box; position: relative; text-align: left; margin: 0 auto; box-shadow: 0 0 50px rgba(0,0,0,1); }
         
-        /* PROFESYONEL ÇİZİM STÜDYOSU ARAYÜZÜ */
         #drawing-modal { background: #fff; padding: 0; }
-        .studio-header { background: #1a1a1a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; color: white; height: 60px; }
-        .studio-tools { background: #f0f0f0; padding: 12px; display: flex; gap: 10px; overflow-x: auto; align-items: center; border-bottom: 1px solid #ddd; height: 70px; box-sizing: border-box; }
-        .tool-icon { padding: 10px 15px; border-radius: 12px; border: 1px solid #ccc; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #333; white-space: nowrap; transition: 0.2s; -webkit-user-select: none; }
-        .tool-icon.active { background: #ff4081; color: white; border-color: #ff4081; box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3); }
+        .studio-header { background: #1a1a1a; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; color: white; height: 70px; }
+        .studio-tools { background: #f5f5f5; padding: 15px; display: flex; gap: 15px; overflow-x: auto; align-items: center; border-bottom: 1px solid #ddd; height: 80px; box-sizing: border-box; }
+        .tool-icon { padding: 12px 20px; border-radius: 12px; border: 1px solid #ccc; background: white; cursor: pointer; font-size: 15px; font-weight: 600; color: #333; white-space: nowrap; transition: 0.2s; }
+        .tool-icon.active { background: #ff4081; color: white; border-color: #ff4081; }
         #paint-canvas { flex-grow: 1; touch-action: none; background: #fff; display: block; width: 100%; }
         
-        input[type="color"] { width: 45px; height: 45px; border: none; border-radius: 50%; cursor: pointer; background: none; }
-        input[type="range"] { width: 100px; }
+        /* HER CİHAZDA AYNI RENK SEÇİCİ */
+        input[type="color"] { width: 50px; height: 50px; border: 2px solid #ccc; border-radius: 10px; cursor: pointer; background: white; padding: 2px; }
+        input[type="range"] { width: 150px; height: 10px; }
 
-        input, textarea { background: #000; border: 1px solid #222; color: white; padding: 15px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1.1rem; outline: none; border-left: 3px solid #ff4081; }
-        textarea { height: 250px; resize: none; }
+        input, textarea { background: #000; border: 1px solid #222; color: white; padding: 18px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 15px; font-family: inherit; font-size: 1.2rem; outline: none; border-left: 5px solid #ff4081; }
+        textarea { height: 350px; resize: none; }
     </style>
 </head>
 <body>
@@ -53,7 +51,7 @@
     <div id="login-screen" class="screen">
         <div class="glass-card">
             <h2 class="milat-baslik">Kalbimin Anahtarı? ❤️</h2>
-            <input type="password" id="passInput" placeholder="Sadece Bize Özel Şifre...">
+            <input type="password" id="passInput" placeholder="Şifre...">
             <br><br>
             <button class="heart-btn" onclick="checkPassword()">Aşkımızın Kapısını Arala</button>
         </div>
@@ -71,9 +69,9 @@
     <div id="start-screen" class="screen">
         <div class="glass-card">
             <span class="milat-baslik">Yolculuğumuzun İlk Nefesi...</span>
-            <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">Ruhumun evini bulduğu o mucizevi günden beri tam;</p>
+            <p style="font-size: 1.2rem; opacity: 0.9; margin: 0;">Ruhumun evini bulduğu o mucizevi günden beri tam;</p>
             <div id="timer-main" class="timer-text"></div>
-            <p style="font-size: 1.1rem; opacity: 0.8; margin: 0;">geçti.</p>
+            <p style="font-size: 1.2rem; opacity: 0.9; margin: 0;">geçti.</p>
             <br>
             <button class="heart-btn" onclick="startStory()">Anılarımıza Yolculuk Yap ✨</button>
         </div>
@@ -96,12 +94,12 @@
 
     <div id="note-screen" class="screen" style="justify-content: flex-start; overflow-y: auto;">
         <div class="glass-card" style="margin-top: 20px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <button onclick="goToMenu()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600;">🏠 Menü</button>
-                <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600;">📸 Slayt</button>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+                <button onclick="goToMenu()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600; font-size:1.1rem;">🏠 Menü</button>
+                <button onclick="startStory()" style="background:none; border:none; color:#ff80ab; cursor:pointer; font-weight:600; font-size:1.1rem;">📸 Slayt</button>
             </div>
-            <h2 class="milat-baslik" style="font-size: 1.8rem;">Anı Defterimiz</h2>
-            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <h2 class="milat-baslik" style="font-size: 2.2rem;">Anı Defterimiz</h2>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px;">
                 <button class="heart-btn" onclick="openWriteModal()">📝 Yazı Yaz</button>
                 <button class="heart-btn" onclick="openDrawingModal()" style="background:#ad1457;">🎨 Çizim Yap</button>
             </div>
@@ -110,45 +108,44 @@
     </div>
 
     <div id="write-modal" class="full-modal">
-        <h2 class="milat-baslik" style="font-size: 1.8rem;">İçinden Geçenleri Dök</h2>
+        <h2 class="milat-baslik" style="font-size: 2rem;">İçinden Geçenler...</h2>
         <textarea id="noteInput" placeholder="Buraya yaz sevgilim..."></textarea>
-        <div style="margin-top: 20px;">
-            <button class="heart-btn" onclick="saveNote()">Notu Sakla ❤️</button>
+        <div>
+            <button class="heart-btn" onclick="saveNote()">Kaydet ❤️</button>
             <button class="heart-btn" onclick="closeModals()" style="background:#333;">Vazgeç</button>
         </div>
     </div>
 
     <div id="drawing-modal" class="full-modal">
         <div class="studio-header">
-            <span style="font-weight: 600;">🎨 Çizim Stüdyosu</span>
+            <span style="font-weight: 600; font-size: 1.2rem;">🎨 Çizim Stüdyosu</span>
             <div>
-                <button onclick="saveNote()" style="background:#ff4081; color:white; border:none; padding:8px 15px; border-radius:10px; font-weight:bold;">KAYDET</button>
-                <button onclick="closeModals()" style="background:#444; color:white; border:none; padding:8px 15px; border-radius:10px; margin-left:10px;">KAPAT</button>
+                <button onclick="saveNote()" style="background:#ff4081; color:white; border:none; padding:10px 20px; border-radius:12px; font-weight:bold; cursor:pointer;">KAYDET</button>
+                <button onclick="closeModals()" style="background:#444; color:white; border:none; padding:10px 20px; border-radius:12px; margin-left:10px; cursor:pointer;">KAPAT</button>
             </div>
         </div>
         <div class="studio-tools">
-            <button class="tool-icon active" id="penBtn" onclick="setTool('pen')">✏️ Kalem</button>
-            <button class="tool-icon" id="markerBtn" onclick="setTool('marker')">🖌️ Keçeli</button>
-            <button class="tool-icon" id="pastelBtn" onclick="setTool('pastel')">🖍️ Pastel</button>
-            <button class="tool-icon" id="glowBtn" onclick="setTool('glow')">✨ Fosfor</button>
-            <button class="tool-icon" onclick="setTool('eraser')">🧹 Silgi</button>
-            <input type="color" id="colorPicker" value="#ff4081">
-            <input type="range" id="sizePicker" min="1" max="50" value="5">
-            <button class="tool-icon" onclick="ctx.clearRect(0,0,canvas.width,canvas.height)" style="background:#ffcdd2;">🗑️ Temizle</button>
+            <button class="tool-icon active" id="penBtn" onclick="setTool('pen')">Kalem</button>
+            <button class="tool-icon" id="markerBtn" onclick="setTool('marker')">Keçeli</button>
+            <button class="tool-icon" id="glowBtn" onclick="setTool('glow')">Fosfor</button>
+            <button class="tool-icon" onclick="setTool('eraser')">Silgi</button>
+            <input type="color" id="colorPicker" title="Renk">
+            <input type="range" id="sizePicker" min="1" max="60" value="5">
+            <button class="tool-icon" onclick="ctx.clearRect(0,0,canvas.width,canvas.height)" style="background:#ffcdd2;">Temizle</button>
         </div>
         <canvas id="paint-canvas"></canvas>
     </div>
 
     <div id="not-detay-modal" class="full-modal">
-        <div style="display: flex; gap: 15px; margin-bottom: 20px; justify-content: center;">
+        <div style="display: flex; gap: 20px; margin-bottom: 25px; justify-content: center;">
             <button onclick="closeModals()" class="heart-btn" style="background: #333;">Kapat</button>
-            <button id="detay-duzenle-btn" class="heart-btn" style="background: #007bff;">Düzenle ✏️</button>
-            <button id="detay-sil-btn" class="heart-btn" style="background: #c82333;">Sil 🗑️</button>
+            <button id="detay-duzenle-btn" class="heart-btn" style="background: #007bff;">Düzenle</button>
+            <button id="detay-sil-btn" class="heart-btn" style="background: #c82333;">Sil</button>
         </div>
         <div class="a4-kagit">
             <small id="detay-tarih" style="color: #ff80ab; display: block; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px;"></small>
-            <p id="detay-metin" style="font-size: 1.1rem; line-height: 1.7; white-space: pre-wrap; margin-bottom: 30px; color: #fff;"></p>
-            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 10px; box-sizing: border-box; display: none;">
+            <p id="detay-metin" style="font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap; margin-bottom: 30px; color: #fff;"></p>
+            <img id="detay-resim" style="width: 100%; border-radius: 10px; background: white; padding: 15px; box-sizing: border-box; display: none;">
         </div>
     </div>
 
@@ -167,7 +164,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 localStorage.getItem('ask_notlari') ? goToMenu() : document.getElementById('start-screen').style.display = 'flex';
                 updateTimer(); setInterval(updateTimer, 1000);
-            } else alert("Yanlış!");
+            } else alert("Hatalı!");
         }
 
         function updateTimer() {
@@ -181,89 +178,53 @@
         function openWriteModal() { document.getElementById('write-modal').style.display = 'flex'; }
         function openDrawingModal() {
             document.getElementById('drawing-modal').style.display = 'flex';
-            const headerH = document.querySelector('.studio-header').offsetHeight;
-            const toolsH = document.querySelector('.studio-tools').offsetHeight;
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - headerH - toolsH;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
+            canvas.height = window.innerHeight - 150;
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
         }
-
         function closeModals() {
             document.querySelectorAll('.full-modal').forEach(m => m.style.display = 'none');
-            editId = null;
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            document.getElementById('noteInput').value = "";
+            editId = null; ctx.clearRect(0,0,canvas.width,canvas.height); document.getElementById('noteInput').value = "";
         }
 
-        /* HATASIZ ÇİZİM MOTORU (MOUSE & TOUCH) */
         function getXY(e) {
             const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
+            const cx = e.touches ? e.touches[0].clientX : e.clientX;
+            const cy = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: cx - rect.left, y: cy - rect.top };
         }
-
-        function start(e) {
-            drawing = true;
-            const pos = getXY(e);
-            lastX = pos.x; lastY = pos.y;
-            ctx.beginPath(); // Her çizimde yolu sıfırla
-        }
-
+        function start(e) { drawing = true; const p = getXY(e); lastX = p.x; lastY = p.y; ctx.beginPath(); }
         function move(e) {
             if (!drawing) return;
             if (e.touches) e.preventDefault();
-            const pos = getXY(e);
-            
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(pos.x, pos.y);
-            
-            const size = document.getElementById('sizePicker').value;
-            const color = document.getElementById('colorPicker').value;
-            
-            ctx.lineWidth = size;
-            ctx.strokeStyle = color;
-            ctx.shadowBlur = 0; ctx.globalAlpha = 1.0;
-            
-            if(currentTool === 'pastel') { ctx.globalAlpha = 0.3; ctx.lineWidth = size * 2.5; }
-            else if(currentTool === 'glow') { ctx.shadowBlur = size; ctx.shadowColor = color; }
-            else if(currentTool === 'marker') { ctx.globalAlpha = 0.6; ctx.lineWidth = size * 1.8; }
-            
-            ctx.stroke();
-            lastX = pos.x; lastY = pos.y;
+            const p = getXY(e);
+            ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y);
+            ctx.lineWidth = document.getElementById('sizePicker').value;
+            ctx.strokeStyle = document.getElementById('colorPicker').value;
+            if(currentTool === 'glow') { ctx.shadowBlur = ctx.lineWidth; ctx.shadowColor = ctx.strokeStyle; } else { ctx.shadowBlur = 0; }
+            if(currentTool === 'marker') ctx.globalAlpha = 0.5; else ctx.globalAlpha = 1;
+            ctx.stroke(); lastX = p.x; lastY = p.y;
         }
-
-        canvas.addEventListener('mousedown', start);
-        canvas.addEventListener('mousemove', move);
+        canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move);
         window.addEventListener('mouseup', () => drawing = false);
         canvas.addEventListener('touchstart', start, {passive: false});
         canvas.addEventListener('touchmove', move, {passive: false});
-        canvas.addEventListener('touchend', () => drawing = false);
 
-        function setTool(tool) {
-            currentTool = tool;
-            ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
+        function setTool(t) {
+            currentTool = t; ctx.globalCompositeOperation = (t === 'eraser') ? 'destination-out' : 'source-over';
             document.querySelectorAll('.tool-icon').forEach(b => b.classList.remove('active'));
-            document.getElementById(tool + 'Btn')?.classList.add('active');
+            document.getElementById(t + 'Btn')?.classList.add('active');
         }
 
         function saveNote() {
             const text = document.getElementById('noteInput').value;
             const isCanvasEmpty = ctx.getImageData(0,0,canvas.width,canvas.height).data.every(p => p === 0);
             const image = isCanvasEmpty ? null : canvas.toDataURL();
-            if(!text.trim() && !image) return;
-
             let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
-            if(editId) {
-                notes = notes.map(n => n.id === editId ? { ...n, text, image } : n);
-            } else {
-                notes.unshift({ id: Date.now(), text, image, date: new Date().toLocaleString('tr-TR') });
-            }
+            if(editId) notes = notes.map(n => n.id === editId ? { ...n, text, image } : n);
+            else notes.unshift({ id: Date.now(), text, image, date: new Date().toLocaleString('tr-TR') });
             localStorage.setItem('ask_notlari', JSON.stringify(notes));
-            confetti({ particleCount: 100 });
-            closeModals(); displayNotes();
+            confetti({ particleCount: 100 }); closeModals(); displayNotes();
         }
 
         function displayNotes() {
@@ -283,9 +244,8 @@
             document.getElementById('detay-metin').innerText = n.text || '';
             const img = document.getElementById('detay-resim');
             if(n.image) { img.src = n.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
-
             document.getElementById('detay-sil-btn').onclick = () => {
-                if(confirm("Silelim mi sevgilim?")) {
+                if(confirm("Silelim mi?")) {
                     let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]");
                     notes = notes.filter(note => note.id !== n.id);
                     localStorage.setItem('ask_notlari', JSON.stringify(notes));
@@ -293,17 +253,10 @@
                 }
             };
             document.getElementById('detay-duzenle-btn').onclick = () => {
-                editId = n.id;
-                document.getElementById('noteInput').value = n.text || '';
+                editId = n.id; document.getElementById('noteInput').value = n.text || '';
                 if(n.image) {
-                    const tempImg = new Image();
-                    tempImg.onload = () => {
-                        ctx.clearRect(0,0,canvas.width,canvas.height);
-                        ctx.drawImage(tempImg,0,0);
-                        openDrawingModal();
-                    };
-                    tempImg.src = n.image;
-                } else { openWriteModal(); }
+                    const temp = new Image(); temp.onload = () => { ctx.drawImage(temp,0,0); openDrawingModal(); }; temp.src = n.image;
+                } else openWriteModal();
                 document.getElementById('not-detay-modal').style.display = 'none';
             };
         }
@@ -318,7 +271,7 @@
             let media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text");
             if (currentIndex >= media.length) {
                 mainMusic.pause();
-                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Baştan İzle</button>
+                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Yeniden İzle</button>
                                      <button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`;
                 return;
             }
@@ -331,8 +284,7 @@
 
         function openNoteScreen() {
             mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-            document.getElementById('note-screen').style.display = 'flex';
-            displayNotes();
+            document.getElementById('note-screen').style.display = 'flex'; displayNotes();
         }
         function goToMenu() { mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('menu-screen').style.display = 'flex'; }
     </script>
