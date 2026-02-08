@@ -14,7 +14,7 @@
         
         .glass-card { background: rgba(20, 20, 20, 0.95); border-radius: 30px; border: 1px solid #ff4081; box-shadow: 0 0 30px rgba(255, 64, 129, 0.2); padding: 30px; width: 95%; max-width: 1100px; box-sizing: border-box; }
         .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #ff4081; margin-bottom: 10px; }
-        .timer-text { font-size: 1.8rem; color: #ff80ab; font-weight: 600; margin: 15px 0; letter-spacing: 1px; }
+        .timer-text { font-size: 1.8rem; color: #ff80ab; font-weight: 600; margin: 10px 0; letter-spacing: 1px; }
         
         .media-box { width: 100%; height: 65vh; max-height: 550px; background: #000; border-radius: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #333; position: relative; }
         .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: fadeEffect 1.5s ease-in-out; }
@@ -86,7 +86,7 @@
 
     <div id="clip-container" class="screen">
         <div class="glass-card">
-            <div class="media-box" id="media-box">
+            <div class="media-box" id="main-media-box">
                 <img src="resim1.jpeg" class="myMedia"><img src="resim2.jpeg" class="myMedia"><img src="resim3.jpeg" class="myMedia">
                 <img src="resim4.jpeg" class="myMedia"><img src="resim5.jpeg" class="myMedia"><img src="resim6.jpeg" class="myMedia">
                 <img src="resim7.jpeg" class="myMedia"><img src="resim8.jpeg" class="myMedia"><img src="resim9.jpeg" class="myMedia">
@@ -101,59 +101,76 @@
 
     <script>
         const TANIŞMA_TARİHİ = '2025-04-03';
-        const mesajlar = ["Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...", "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.", "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.", "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.", "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.", "Zamanın durmasını istediğim binlerce andan sadece biri...", "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.", "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans!", "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.", "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.", "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.", "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.", "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.", "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.", "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)", "Seni çok seviyorum sevgilimmmmm❤️"];
+        const mesajlar = ["Henüz birbirimizden habersizken bile kalplerimiz bu gün için atıyormuş...", "Daha 'biz' olmadan önce çekilen bu kare, hayatımın en güzel dönüm noktasıymış.", "'Gözleriniz birbirine ne kadar benziyor' dedikleri o gün, ruhlarımızın benzerliğini keşfetmiştik.", "Bakmaya doyamadığım her karemizde, dünyam seninle daha parlak görünüyor.", "Sadece bir fotoğraf değil, senin yanında kendimi bulduğum bir sığınak bu.", "Zamanın durmasını istediğim binlerce andan sadece biri...", "Sen benim en güzel manzaramsın, her bakışta yeniden huzur bulduğum.", "Birlikte çocuk gibi eğlenebildiğim tek insan olman ne büyük şans", "Aşk sadece el ele tutuşmak değil, saçmalarken bile aynı ritimde olmaktır.", "Gülüşünün içinde saklı olan o neşe, en kötü günümün bile ilacı.", "Seninle gülmekten yorulmak, hayatın bana sunduğu en güzel yorgunluk.", "Dünyanın en komik ama en romantik sahnelerinin başrolü her zaman biziz.", "Aynı renklere gönül vermek, aynı heyecanla birleşmek... Galibiyetimiz hep 'biz' olalım.", "Dünyaya senin gözlerinden bakmak, gördüğüm en güzel gerçeklik.", "Tüm dileklerinin gerçek olduğu, hayallerimizle süslü nice mutlu senelerimize ömrümmmmm:)", "Seni çok seviyorum sevgilimmmmm❤️"];
 
         let currentIndex = 0;
-        const canvas = document.getElementById('paint-canvas'), mainMusic = document.getElementById('mainMusic');
+        const mainMusic = document.getElementById('mainMusic');
 
         function checkPassword() { if(document.getElementById('passInput').value === '2240') { document.getElementById('login-screen').style.display = 'none'; document.getElementById('start-screen').style.display = 'flex'; updateTimer(); setInterval(updateTimer, 1000); } else alert('Hatalı Şifre sevgilim'); }
         function updateTimer() { const diff = new Date() - new Date(TANIŞMA_TARİHİ); const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000); const txt = `${d} G, ${h} S, ${m} D, ${s} S`; document.getElementById('timer-main').innerText = txt; if(document.getElementById('timer-menu')) document.getElementById('timer-menu').innerText = txt; }
         
-        function startStory() { document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('clip-container').style.display = 'flex'; currentIndex = 0; mainMusic.currentTime = 0; mainMusic.play(); showNext(); }
+        function startStory() { 
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); 
+            document.getElementById('clip-container').style.display = 'flex'; 
+            currentIndex = 0; 
+            mainMusic.currentTime = 0; 
+            mainMusic.play(); 
+            showNext(); 
+        }
 
-        function showNext() {
+        function showNext() { 
             const media = document.getElementsByClassName("myMedia");
             const textDiv = document.getElementById("message-text");
 
-            // Eğer mesajlar bittiyse durdur
-            if (currentIndex >= mesajlar.length) {
+            // 1. Durum: Mesajlar tamamen bittiyse (16. mesaj gösterildikten sonrası)
+            if (currentIndex >= mesajlar.length) { 
                 mainMusic.pause();
+                return; 
+            } 
+
+            // 2. Durum: Son mesajı gösteriyoruz ("Seni çok seviyorum...")
+            if (currentIndex === mesajlar.length - 1) {
+                // Son medyayı (resim14) bul ve ekranda tut
+                for (let m of media) { m.style.display="none"; }
+                media[media.length - 1].style.display = "block";
+                
+                // Mesajı yaz ve hemen altına butonları ekle
+                textDiv.innerHTML = mesajlar[currentIndex] + `
+                    <div style="margin-top:20px;">
+                        <button class='heart-btn' onclick='startStory()'>Baştan İzle</button>
+                        <button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>
+                    </div>`;
+                currentIndex++;
                 return;
             }
 
-            // Medyayı yönet: Eğer index medya sayısından küçükse medyayı güncelle, değilse son medyayı (resim14) tut
-            const mediaIndex = Math.min(currentIndex, media.length - 1);
-            for (let m of media) { m.style.display = "none"; if (m.tagName === "VIDEO") m.pause(); }
-            media[mediaIndex].style.display = "block";
-
-            // Mesajı yaz
-            textDiv.innerHTML = mesajlar[currentIndex];
-
-            // Eğer bu mesaj senin son mesajınsa ("Seni çok seviyorum...") butonları hemen altına ekle
-            if (currentIndex === mesajlar.length - 1) {
-                textDiv.innerHTML += `<div style="margin-top:20px;">
-                                        <button class='heart-btn' onclick='startStory()'>Baştan İzle</button>
-                                        <button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>
-                                     </div>`;
-                return; // Döngüyü burada bitir
+            // 3. Durum: Normal akış
+            for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); } 
+            
+            if (media[currentIndex]) {
+                media[currentIndex].style.display = "block"; 
+                textDiv.innerHTML = mesajlar[currentIndex];
+                
+                if (media[currentIndex].tagName === "VIDEO") { 
+                    media[currentIndex].play(); 
+                    media[currentIndex].onended = () => { currentIndex++; showNext(); }; 
+                    return; 
+                } 
             }
 
-            // Video ise bitmesini bekle, resim ise 6 saniye bekle
-            if (media[mediaIndex].tagName === "VIDEO" && currentIndex < media.length - 1) {
-                media[mediaIndex].play();
-                media[mediaIndex].onended = () => { currentIndex++; showNext(); };
-            } else {
-                currentIndex++;
-                setTimeout(showNext, 6000);
-            }
+            currentIndex++; 
+            setTimeout(showNext, 6000); 
         }
 
-        // Diğer fonksiyonlar (Notlar, Çizim vb. aynen korundu)
+        // Diğer fonksiyonlar (Notlar ve Çizim JS kısımları - Hiç değişmedi)
+        function openWriteModal() { document.getElementById('write-modal').style.display = 'flex'; }
+        function openDrawingModal() { document.getElementById('drawing-modal').style.display = 'flex'; canvas.width = window.innerWidth; canvas.height = window.innerHeight - 150; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; saveToHistory(); }
+        function closeModals() { document.querySelectorAll('.full-modal').forEach(m => m.style.display = 'none'); editId = null; }
         function openNoteScreen() { mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('note-screen').style.display = 'flex'; displayNotes(); }
         function goToMenu() { mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('menu-screen').style.display = 'flex'; }
-        // ... (Not ve Çizim JS kodlarını buraya ekleyebilirsin, ancak slayt sorunun çözüldü)
+        // ... (Kalan tüm yardımcı kodlar aynen geçerlidir)
     </script>
-    
+
     <div id="note-screen" class="screen" style="justify-content: flex-start; overflow-y: auto;">
         <div class="glass-card" style="margin-top: 10px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
