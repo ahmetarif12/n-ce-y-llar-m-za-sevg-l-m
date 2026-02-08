@@ -16,7 +16,6 @@
         .milat-baslik { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #ff4081; margin-bottom: 10px; }
         .timer-text { font-size: 1.8rem; color: #ff80ab; font-weight: 600; margin: 10px 0; letter-spacing: 1px; }
         
-        /* SLAYT AYARI - MOBİLDE KAYDIRMAYI ÖNLEYEN ÖZEL ÖLÇÜLER */
         .media-box { width: 100%; height: 65vh; max-height: 550px; background: #000; border-radius: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #333; position: relative; }
         .myMedia { display: none; max-width: 100%; max-height: 100%; object-fit: contain; animation: fadeEffect 1.5s ease-in-out; }
         @keyframes fadeEffect { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
@@ -25,7 +24,7 @@
         
         @media (max-width: 768px) {
             .glass-card { padding: 20px; border-radius: 20px; }
-            .media-box { height: 40vh; } /* Telefondaki slayt alanını daha da optimize ettim */
+            .media-box { height: 42vh; } 
             .text-area { font-size: 1.1rem; min-height: 50px; margin-top: 10px; }
             .milat-baslik { font-size: 2.2rem; }
             .timer-text { font-size: 1.3rem; }
@@ -79,7 +78,7 @@
             <h2 class="milat-baslik">Hoş Geldin Ömrüm</h2>
             <div id="timer-menu" class="timer-text"></div>
             <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                <button class="heart-btn" onclick="startStory()">Anılarımızı İzle 📸</button>
+                <button class="heart-btn" onclick="startStory()">Anıları İzle 📸</button>
                 <button class="heart-btn" onclick="openNoteScreen()">Aşk Notları 📝</button>
             </div>
         </div>
@@ -182,10 +181,41 @@
         function displayNotes() { const notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]"); document.getElementById('notes-grid').innerHTML = notes.map(n => `<div class="note-card" onclick='viewNote(${JSON.stringify(n).replace(/'/g, "&apos;")})'><small style="color:#ff80ab">${n.date}</small><p>${n.text || ''}</p>${n.image ? `<img src="${n.image}">` : ''}</div>`).join(''); }
         function viewNote(n) { document.getElementById('not-detay-modal').style.display = 'flex'; document.getElementById('detay-tarih').innerText = n.date; document.getElementById('detay-metin').innerText = n.text || ''; const img = document.getElementById('detay-resim'); if(n.image) { img.src = n.image; img.style.display = 'block'; } else { img.style.display = 'none'; } document.getElementById('detay-sil-btn').onclick = () => { if(confirm("Silinsin mi?")) { let notes = JSON.parse(localStorage.getItem('ask_notlari') || "[]"); notes = notes.filter(note => note.id !== n.id); localStorage.setItem('ask_notlari', JSON.stringify(notes)); closeModals(); displayNotes(); } }; document.getElementById('detay-duzenle-btn').onclick = () => { editId = n.id; document.getElementById('noteInput').value = n.text || ''; if(n.image) { const temp = new Image(); temp.onload = () => { ctx.drawImage(temp,0,0); openDrawingModal(); saveToHistory(); }; temp.src = n.image; } else openWriteModal(); document.getElementById('not-detay-modal').style.display = 'none'; }; }
         function startStory() { document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('clip-container').style.display = 'flex'; currentIndex = 0; mainMusic.currentTime = 0; mainMusic.play(); showNext(); }
-        function showNext() { const media = document.getElementsByClassName("myMedia"), textDiv = document.getElementById("message-text"); if (currentIndex >= media.length) { mainMusic.pause(); textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Baştan İzle</button><button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`; return; } for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); } media[currentIndex].style.display = "block"; textDiv.innerHTML = mesajlar[currentIndex]; if (media[currentIndex].tagName === "VIDEO") { media[currentIndex].play(); media[currentIndex].onended = () => { currentIndex++; showNext(); }; } else { currentIndex++; setTimeout(showNext, 6000); } }
+
+        // GÜNCELLENEN SHOW_NEXT FONKSİYONU
+        function showNext() { 
+            const media = document.getElementsByClassName("myMedia");
+            const textDiv = document.getElementById("message-text");
+
+            // Eğer tüm medya ve tüm mesajlar bittiyse dur
+            if (currentIndex >= mesajlar.length) { 
+                mainMusic.pause(); 
+                textDiv.innerHTML = `<button class='heart-btn' onclick='startStory()'>Baştan İzle</button><button class='heart-btn' onclick='openNoteScreen()'>Not Bırak ❤️</button>`; 
+                return; 
+            } 
+
+            // Medyayı gizle
+            for (let m of media) { m.style.display="none"; if(m.tagName==="VIDEO") m.pause(); } 
+
+            // Eğer mevcut index için medya varsa göster, yoksa (yani sadece son mesaj kaldıysa) medyayı gizli tut
+            if (media[currentIndex]) {
+                media[currentIndex].style.display = "block"; 
+                if (media[currentIndex].tagName === "VIDEO") { 
+                    media[currentIndex].play(); 
+                    media[currentIndex].onended = () => { currentIndex++; showNext(); }; 
+                    textDiv.innerHTML = mesajlar[currentIndex];
+                    return; // Video bitene kadar bekle
+                } 
+            }
+
+            // Mesajı yaz ve sonraki adıma geç
+            textDiv.innerHTML = mesajlar[currentIndex];
+            currentIndex++; 
+            setTimeout(showNext, 6000); 
+        }
+
         function openNoteScreen() { mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('note-screen').style.display = 'flex'; displayNotes(); }
         function goToMenu() { mainMusic.pause(); document.querySelectorAll('.screen').forEach(s => s.style.display = 'none'); document.getElementById('menu-screen').style.display = 'flex'; }
     </script>
 </body>
 </html>
-
